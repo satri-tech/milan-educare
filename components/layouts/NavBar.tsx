@@ -9,9 +9,9 @@ export default function NavBar() {
 
     const links = useMemo(() => [
         { title: "Home", id: "home" },
+        { title: "About Us", id: "about" },
         { title: "Mock Test", id: "mocks" },
         { title: "NEB Notes", id: "notes" },
-        { title: "About Us", id: "about" },
         { title: "Contact Us", id: "contact" },
     ], []);
 
@@ -76,7 +76,7 @@ export default function NavBar() {
     };
 
     return (
-        <div  className="py-6 flex w-full justify-center font-Poppins sticky top-0 bg-white z-50 ">
+        <div className="py-6 flex w-full justify-center font-Poppins sticky top-0 bg-white z-50 ">
             <div className="w-[92%] flex justify-between items-center">
                 <div className="font-semibold text-2xl cursor-pointer font-Varela"
                     onClick={() => handleMenuClick("home")}>

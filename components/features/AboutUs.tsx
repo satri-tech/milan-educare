@@ -13,11 +13,11 @@ export default function AboutUs() {
                         </div>
                         <h1 className="text-4xl lg:text-6xl font-bold text-foreground mb-6 leading-tight">
                             Empowering Education,
-                            <span className="block bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                            <span className="block bg-gradient-to-r from-primary/70  to-primary bg-clip-text text-transparent">
                                 Nurturing Futures
                             </span>
                         </h1>
-                        <p className="text-xl text-muted-foreground leading-relaxed max-w-4xl mx-auto">
+                        <p className="text-base text-muted-foreground leading-relaxed max-w-4xl mx-auto">
                             {` For nearly a decade, Milan EduCare has been at the forefront of educational innovation,
                             providing exceptional support services that transform learning experiences and unlock every student's potential.`}
                         </p>

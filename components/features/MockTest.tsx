@@ -50,7 +50,7 @@ export default function MockTest() {
                         {mockTests.map((test) => (
                             <Card
                                 key={test.id}
-                                className="hover:shadow-lg transition-shadow duration-300 border border-gray-200 h-full flex flex-col"
+                                className=" transition-shadow duration-300 border border-gray-200 h-full flex flex-col"
                             >
                                 <CardHeader className="pb-2 pt-4 px-4">
                                     <div className="flex justify-between items-start mb-1">

@@ -93,7 +93,6 @@ export default function NebNotes() {
                     <h1 className="text-4xl font-bold text-foreground mb-2">NEB Notes</h1>
                     <p className="text-lg text-muted-foreground">Complete study materials for Grade XI and XII</p>
                 </div>
-
                 <div className="space-y-8">
                     {Object.entries(nebData).map(([grade, gradeData]) => (
                         <div
@@ -110,8 +109,8 @@ export default function NebNotes() {
                                             <GraduationCap className="h-7 w-7 text-secondary-foreground" />
                                         </div>
                                         <div>
-                                            <h2 className="text-2xl font-bold text-primary-foreground mb-1">{grade}</h2>
-                                            <p className="text-primary-foreground/70 text-sm font-medium">Science Faculty • NEB Curriculum</p>
+                                            <h2 className="text-xl font-bold text-primary-foreground mb-1">{grade}</h2>
+                                            <p className="text-primary-foreground/70 text-xs font-medium">Science Faculty • NEB Curriculum</p>
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-3">
@@ -141,7 +140,7 @@ export default function NebNotes() {
                                                     </div>
                                                     <div className="text-left flex-1">
                                                         <div className="flex items-center gap-3 mb-1">
-                                                            <h3 className="text-lg font-semibold text-foreground group-hover/subject:text-primary transition-colors">
+                                                            <h3 className="text-base font-semibold text-foreground group-hover/subject:text-primary transition-colors">
                                                                 {subject}
                                                             </h3>
                                                             <Badge
@@ -169,7 +168,7 @@ export default function NebNotes() {
                                                                         <FileText className="h-5 w-5 text-secondary-foreground" />
                                                                     </div>
                                                                     <div className="flex-1">
-                                                                        <h4 className="font-semibold text-foreground group-hover/topic:text-primary transition-colors">
+                                                                        <h4 className="font-semibold text-sm text-foreground group-hover/topic:text-primary transition-colors">
                                                                             {topic.title}
                                                                         </h4>
                                                                         <p className="text-xs text-muted-foreground font-medium">
