@@ -38,7 +38,7 @@ export default function MockTest() {
     }, [])
 
     return (
-        <div id="mocks" className="flex justify-center items-center mt-8 border-t-[0.1px] font-Poppins pt-8 w-screen">
+        <div id="mocks" className="flex justify-center items-center mt-8 font-Poppins pt-8 w-screen">
             <div className="flex w-[92%] gap-4 flex-col">
                 <div className="text-center mb-8">
                     <h1 className="text-4xl font-bold text-foreground mb-2">Mock Tests</h1>

@@ -2,10 +2,9 @@ import { Target, Globe } from "lucide-react"
 
 export default function AboutUs() {
     return (
-        <div id="about" className="bg-gradient-to-br from-background via-muted/30 to-background font-Poppins">
+        <div id="about" className="bg-gradient-to-br from-background via-muted/30 to-background font-Poppins bg-green-200 border-b">
             {/* Hero Section */}
             <div className="relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-secondary/5"></div>
                 <div className="relative flex justify-center items-center pt-24 pb-16">
                     <div className="w-[92%] max-w-7xl text-center">
                         <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
@@ -25,7 +24,7 @@ export default function AboutUs() {
                 </div>
             </div>
             {/* Mission & Vision Section */}
-            <div className="py-16 bg-muted/50">
+            <div className="py-16 ">
                 <div className="max-w-7xl mx-auto px-4 lg:px-8">
                     <div className="grid lg:grid-cols-2 gap-12 items-center">
                         <div className="space-y-8">

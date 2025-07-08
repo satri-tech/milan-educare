@@ -42,7 +42,7 @@ export default function ImageSwiper({ swiperImages, imageClass }: IImageSwiper) 
                                 alt=""
                                 width={2000}
                                 height={600}
-                                className={`w-full h-auto object-cover ${imageClass}`}
+                                className={`w-full  object-cover ${imageClass}`}
                             />
                         </SwiperSlide>
                     );

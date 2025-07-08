@@ -15,10 +15,11 @@ export default function Home() {
     SliderImage1, SliderImage2, SliderImage3
   ];
   return (
-    <div className=" flex flex-col gap-10">
+    <div className=" flex flex-col gap-20">
       <NavBar />
+      {/* <HeroSection /> */}
       <WelcomeText />
-      <ImageSlider swiperImages={swiperImages} imageClass={"object-cover w-full h-[32rem]"}
+      <ImageSlider swiperImages={swiperImages} imageClass={"object-cover w-full h-[35rem]"}
       />
       <AboutUs />
       <MockTest />
