@@ -14,7 +14,7 @@ import {
     SidebarProvider,
     SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Building, Settings, User } from "lucide-react";
+import { BookAIcon, BookIcon, Building, PenTool, Settings, User } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Outfit } from "next/font/google";
@@ -56,7 +56,12 @@ export default function AdminLayout({
             {
                 title: "Mock Tests",
                 url: "/admin/mocks",
-                icon: User,
+                icon: PenTool,
+            },
+            {
+                title: "NEB Notes",
+                url: "/admin/notes",
+                icon: BookIcon,
             },
             {
                 title: "Settings",
