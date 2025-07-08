@@ -18,11 +18,11 @@ export default function Home() {
     <div className=" flex flex-col gap-10">
       <NavBar />
       <WelcomeText />
-        <ImageSlider swiperImages={swiperImages} imageClass={"object-cover w-full h-[32rem]"}
-        />
+      <ImageSlider swiperImages={swiperImages} imageClass={"object-cover w-full h-[32rem]"}
+      />
+      <AboutUs />
       <MockTest />
       <NebNotes />
-      <AboutUs />
       <ContactSection />
       <Footer />
     </div>

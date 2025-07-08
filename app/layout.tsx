@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import SessionProviderWrapper from "@/lib/session-provider";
+import { Toaster } from "@/components/ui/sonner"
 
 const poppins = Poppins({
   weight: ['100', '200', '300', '400', '500', '600', '700', '800'],
@@ -25,6 +26,7 @@ export default function RootLayout({
       >
         <SessionProviderWrapper>
           {children}
+          <Toaster />
         </SessionProviderWrapper>
       </body>
     </html >
