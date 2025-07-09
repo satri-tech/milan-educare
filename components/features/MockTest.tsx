@@ -4,6 +4,16 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { useState, useEffect } from 'react'
 import axios from "axios"
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogFooter,
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { useRouter } from "next/navigation"
 
 interface MockTest {
     id: string
@@ -12,13 +22,19 @@ interface MockTest {
     duration: string
     questions: number
     description: string
+    link: string
 }
 
-
 export default function MockTest() {
-    const [, setLoading] = useState(true)
+    const [loading, setLoading] = useState(true)
     const [mockTests, setMockTests] = useState<MockTest[]>([])
-    const [, setError] = useState('')
+    const [error, setError] = useState('')
+    const [selectedTest, setSelectedTest] = useState<MockTest | null>(null)
+    const [password, setPassword] = useState('')
+    const [passwordError, setPasswordError] = useState('')
+    const [isDialogOpen, setIsDialogOpen] = useState(false)
+    const router = useRouter()
+
     const fetchMockTests = async () => {
         try {
             setLoading(true)
@@ -30,6 +46,34 @@ export default function MockTest() {
             console.error('Error fetching mock tests:', err)
         } finally {
             setLoading(false)
+        }
+    }
+
+    const handleStartTest = (test: MockTest) => {
+        setSelectedTest(test)
+        setIsDialogOpen(true)
+    }
+
+    const verifyPassword = async () => {
+        try {
+            setPasswordError('')
+            const response = await axios.post('/api/admin/mock-tests/password/verify', {
+                password,
+                testId: selectedTest?.id
+            })
+
+            if (response.data.success) {
+                if (selectedTest?.link) {
+                    window.open(selectedTest.link, '_blank')
+                }
+                setIsDialogOpen(false)
+                setPassword('')
+            } else {
+                setPasswordError('Incorrect password')
+            }
+        } catch (err) {
+            setPasswordError('Failed to verify password')
+            console.error('Error verifying password:', err)
         }
     }
 
@@ -72,7 +116,12 @@ export default function MockTest() {
                                             {test.questions} questions
                                         </Badge>
                                     </div>
-                                    <Button className="w-full text-white font-medium text-sm py-2">Start Mock Test</Button>
+                                    <Button
+                                        onClick={() => handleStartTest(test)}
+                                        className="w-full text-white font-medium text-sm py-2"
+                                    >
+                                        Start Mock Test
+                                    </Button>
                                 </CardContent>
                             </Card>
                         ))}
@@ -103,6 +152,37 @@ export default function MockTest() {
                         </Card>
                     </div>
                 )}
+
+                {/* Password Dialog */}
+                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle>Enter Password</DialogTitle>
+                            <DialogDescription>
+                                Please enter the password to access this mock test.
+                            </DialogDescription>
+                        </DialogHeader>
+                        <div className="py-4">
+                            <Input
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder="Enter password"
+                            />
+                            {passwordError && (
+                                <p className="text-red-500 text-sm mt-2">{passwordError}</p>
+                            )}
+                        </div>
+                        <DialogFooter>
+                            <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+                                Cancel
+                            </Button>
+                            <Button onClick={verifyPassword}>
+                                Verify
+                            </Button>
+                        </DialogFooter>
+                    </DialogContent>
+                </Dialog>
             </div>
         </div>
     )
