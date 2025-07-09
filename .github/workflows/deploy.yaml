@@ -35,7 +35,7 @@ jobs:
           cd /home/satri/web/milan-educare
           
           # Pull latest changess
-          git pull origin main
+          git pull origin master
           
           # Install dependencies
           npm install
