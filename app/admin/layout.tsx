@@ -14,7 +14,7 @@ import {
     SidebarProvider,
     SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { BookAIcon, BookIcon, Building, PenTool, Settings, User } from "lucide-react";
+import { BookIcon, Building, PenTool, Settings, User } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Outfit } from "next/font/google";
