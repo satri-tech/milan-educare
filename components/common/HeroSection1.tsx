@@ -41,8 +41,8 @@ export default function HeroSection() {
                                 <span className="text-primary">Milan EduCare</span>
                             </h1>
                             <p className="max-w-[600px] text-muted-foreground md:text-xl text-justify">
-                                For nearly a decade, Milan EduCare has been at the forefront of educational innovation,
-                                providing exceptional support services that transform learning experiences and unlock every student's potential.
+                                {`  For nearly a decade, Milan EduCare has been at the forefront of educational innovation,
+                                providing exceptional support services that transform learning experiences and unlock every student's potential.`}
                             </p>
                         </div>
                         <div className="flex flex-col gap-2 min-[400px]:flex-row">

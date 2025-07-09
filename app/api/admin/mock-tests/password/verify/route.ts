@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
-    const { password, testId } = await req.json();
+    const { password } = await req.json();
 
     // Get the global settings
     const settings = await prisma.settings.findUnique({

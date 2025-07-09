@@ -13,7 +13,6 @@ import {
     DialogFooter,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
-import { useRouter } from "next/navigation"
 
 interface MockTest {
     id: string
@@ -26,14 +25,13 @@ interface MockTest {
 }
 
 export default function MockTest() {
-    const [loading, setLoading] = useState(true)
+    const [, setLoading] = useState(true)
     const [mockTests, setMockTests] = useState<MockTest[]>([])
-    const [error, setError] = useState('')
+    const [, setError] = useState('')
     const [selectedTest, setSelectedTest] = useState<MockTest | null>(null)
     const [password, setPassword] = useState('')
     const [passwordError, setPasswordError] = useState('')
     const [isDialogOpen, setIsDialogOpen] = useState(false)
-    const router = useRouter()
 
     const fetchMockTests = async () => {
         try {

@@ -46,18 +46,8 @@ export async function PUT(req: Request) {
       message: "Password updated successfully",
       password: settings.mockTestPassword,
     });
-  } catch (error: any) {
-    console.error("Error updating password:", error);
-
-    if (
-      error.code === "P2025" ||
-      error.message?.includes("Record to update not found")
-    ) {
-      return NextResponse.json(
-        { error: "Global settings not found to update" },
-        { status: 404 }
-      );
-    }
+  } catch {
+    console.error("Error updating password:");
 
     return NextResponse.json(
       { error: "Failed to update mock test password" },
