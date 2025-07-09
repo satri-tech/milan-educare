@@ -10,7 +10,7 @@ export const contactInfo = {
   section: {
     title: "Connect with Milan Educare",
     description:
-      "Have questions about admissions, courses, or collaborations? Reach out to our team and we'll get back to you shortly...",
+      "Have questions about admissions, courses, or collaborations? Reach out to our team and we'll get back to you shortly....",
     badge: "We're Here to Help",
   },
 
