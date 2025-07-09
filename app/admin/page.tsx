@@ -14,7 +14,7 @@ export default function AdminPage() {
                                 <h3 className="text-xl font-semibold">Dashboard Under Development</h3>
                             </div>
                             <p className="text-muted-foreground mb-4">
-                                {`We're building a comprehensive admin dashboard with all the tools you need to manage your educational platform effectively`}.
+                                {`We're building a comprehensive admin dashboard with all the tools you need to manage your educational platform effectively.`}.
                             </p>
                             <div className="flex flex-wrap justify-center gap-2">
                                 <Badge variant="outline">Dynamic Image upload for slider</Badge>
