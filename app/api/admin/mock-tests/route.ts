@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
 
     // Validation
-    const { title, subject, duration, questions, description } = body;
+    const { title, subject, duration, questions, description, link } = body;
 
     if (!title || !subject || !duration || !questions || !description) {
       return NextResponse.json(
@@ -54,6 +54,7 @@ export async function POST(request: NextRequest) {
         duration,
         questions,
         description,
+        link,
       },
     });
 

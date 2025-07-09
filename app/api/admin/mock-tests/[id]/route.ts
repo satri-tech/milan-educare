@@ -44,9 +44,16 @@ export async function PUT(
     const body = await request.json();
 
     // Validation
-    const { title, subject, duration, questions, description } = body;
+    const { title, subject, duration, questions, description, link } = body;
 
-    if (!title || !subject || !duration || !questions || !description) {
+    if (
+      !title ||
+      !subject ||
+      !duration ||
+      !questions ||
+      !description ||
+      !link
+    ) {
       return NextResponse.json(
         { success: false, error: "Missing required fields" },
         { status: 400 }
@@ -81,6 +88,7 @@ export async function PUT(
         duration,
         questions,
         description,
+        link,
       },
     });
 

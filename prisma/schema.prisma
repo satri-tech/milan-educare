@@ -23,4 +23,11 @@ model MockTest {
   duration    String
   questions   Int
   description String
+  link        String 
+}
+
+model Settings {
+  id               String   @id @default("global") // fixed ID
+  mockTestPassword String
+  updatedAt        DateTime @updatedAt
 }

@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState, useEffect } from "react"
 import axios from "axios"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -27,10 +26,12 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { Trash2, Edit, Plus, FileText, BookOpen } from "lucide-react"
+import { Trash2, Edit, Plus, FileText, BookOpen, Eye, EyeOff, Copy, Key, Check } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { toast } from "sonner"
+import { Label } from "@/components/ui/label"
 
 interface MockTest {
     id: string
@@ -38,6 +39,7 @@ interface MockTest {
     subject: string
     duration: string
     questions: number
+    link: string
     description: string
 }
 
@@ -53,10 +55,20 @@ export default function AdminMockTest() {
         subject: "",
         duration: "",
         questions: "",
+        link: "",
         description: "",
     })
     const [formError, setFormError] = useState("")
     const [isSubmitting, setIsSubmitting] = useState(false)
+
+    // Password management states
+    const [currentPassword, setCurrentPassword] = useState("")
+    const [newPassword, setNewPassword] = useState("")
+    const [showCurrentPassword, setShowCurrentPassword] = useState(false)
+    const [showNewPassword, setShowNewPassword] = useState(false)
+    const [passwordLoading, setPasswordLoading] = useState(false)
+    const [passwordUpdating, setPasswordUpdating] = useState(false)
+    const [copied, setCopied] = useState(false)
 
     const durations = ["30 minutes", "1 hour", "1.5 hours", "2 hours", "2.5 hours", "3 hours", "3.5 hours", "4 hours"]
 
@@ -74,8 +86,56 @@ export default function AdminMockTest() {
         }
     }
 
+    const fetchPassword = async () => {
+        try {
+            setPasswordLoading(true)
+            const response = await axios.get("/api/admin/mock-tests/password")
+            setCurrentPassword(response.data.password)
+            setNewPassword(response.data.password)
+        } catch (err) {
+            console.error("Error fetching password:", err)
+            toast("Failed to fetch mock test password")
+        } finally {
+            setPasswordLoading(false)
+        }
+    }
+
+    const updatePassword = async () => {
+        if (!newPassword.trim()) {
+            toast("Password cannot be empty")
+            return
+        }
+
+        try {
+            setPasswordUpdating(true)
+            const response = await axios.put("/api/admin/mock-tests/password", {
+                password: newPassword,
+            })
+            setCurrentPassword(response.data.password)
+            toast("Mock test password updated successfully")
+        } catch (err) {
+            console.error("Error updating password:", err)
+            toast("Failed to update mock test password")
+        } finally {
+            setPasswordUpdating(false)
+        }
+    }
+
+    const copyPassword = async () => {
+        try {
+            await navigator.clipboard.writeText(currentPassword)
+            setCopied(true)
+            toast("Password copied to clipboard")
+            setTimeout(() => setCopied(false), 2000)
+        } catch (err) {
+            console.error("Error copying password:", err)
+            toast("Failed to copy password",)
+        }
+    }
+
     useEffect(() => {
         fetchMockTests()
+        fetchPassword()
     }, [])
 
     const resetForm = () => {
@@ -84,6 +144,7 @@ export default function AdminMockTest() {
             subject: "",
             duration: "",
             questions: "",
+            link: "",
             description: "",
         })
         setFormError("")
@@ -119,7 +180,6 @@ export default function AdminMockTest() {
 
     const handleAddTest = async () => {
         if (!validateForm()) return
-
         try {
             setIsSubmitting(true)
             const response = await axios.post("/api/admin/mock-tests", {
@@ -127,9 +187,9 @@ export default function AdminMockTest() {
                 subject: formData.subject,
                 duration: formData.duration,
                 questions: Number(formData.questions),
+                link: formData.link,
                 description: formData.description,
             })
-
             if (response.data.success) {
                 setIsAddDialogOpen(false)
                 resetForm()
@@ -150,6 +210,7 @@ export default function AdminMockTest() {
             subject: test.subject,
             duration: test.duration,
             questions: test.questions.toString(),
+            link: test.link,
             description: test.description,
         })
         setFormError("")
@@ -158,7 +219,6 @@ export default function AdminMockTest() {
 
     const handleEditTest = async () => {
         if (!validateForm() || !currentEditTest) return
-
         try {
             setIsSubmitting(true)
             const response = await axios.put(`/api/admin/mock-tests/${currentEditTest.id}`, {
@@ -166,9 +226,9 @@ export default function AdminMockTest() {
                 subject: formData.subject,
                 duration: formData.duration,
                 questions: Number(formData.questions),
+                link: formData.link,
                 description: formData.description,
             })
-
             if (response.data.success) {
                 setIsEditDialogOpen(false)
                 resetForm()
@@ -214,7 +274,7 @@ export default function AdminMockTest() {
                 {/* Stats Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
                     <Card>
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1">
                             <CardTitle className="text-sm font-medium">Total Tests</CardTitle>
                             <FileText className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
@@ -223,7 +283,7 @@ export default function AdminMockTest() {
                         </CardContent>
                     </Card>
                     <Card>
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1">
                             <CardTitle className="text-sm font-medium">Total Questions</CardTitle>
                             <BookOpen className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
@@ -231,7 +291,74 @@ export default function AdminMockTest() {
                             <div className="text-2xl font-bold">{mockTests.reduce((sum, test) => sum + test.questions, 0)}</div>
                         </CardContent>
                     </Card>
-
+                    <Card className="gap-4">
+                        <CardHeader className="flex flex-row items-center justify-between  border-b [.border-b]:pb-4 ">
+                            <CardTitle className="text-base font-medium">Mock Test Password</CardTitle>
+                            <Key className="h-4 w-4 text-muted-foreground" />
+                        </CardHeader>
+                        <CardContent className="space-y-3 text-sm">
+                            {passwordLoading ? (
+                                <div className="text-sm text-muted-foreground">Loading...</div>
+                            ) : (
+                                <>
+                                    <div className="flex flex-col  gap-2">
+                                        <Label>Current Password</Label>
+                                        <div className="relative flex-1">
+                                            <Input
+                                                type={showCurrentPassword ? "text" : "password"}
+                                                value={currentPassword}
+                                                readOnly
+                                                className="pr-20"
+                                            />
+                                            <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
+                                                <Button
+                                                    type="button"
+                                                    variant="ghost"
+                                                    size="sm"
+                                                    className="h-6 w-6 p-0"
+                                                    onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                                                >
+                                                    {showCurrentPassword ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
+                                                </Button>
+                                                <Button type="button" variant="ghost" size="sm" className="h-6 w-6 p-0" onClick={copyPassword}>
+                                                    {copied ? <Check className="h-3 w-3 text-green-600" /> : <Copy className="h-3 w-3" />}
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label>Update Password Here</Label>
+                                        <div className="relative ">
+                                            <Input
+                                                type={showNewPassword ? "text" : "password"}
+                                                value={newPassword}
+                                                onChange={(e) => setNewPassword(e.target.value)}
+                                                placeholder="Enter new password"
+                                                className="pr-10"
+                                            />
+                                            <Button
+                                                type="button"
+                                                variant="ghost"
+                                                size="sm"
+                                                className="absolute right-2 top-1/2 -translate-y-1/2 h-6 w-6 p-0"
+                                                onClick={() => setShowNewPassword(!showNewPassword)}
+                                            >
+                                                {showNewPassword ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
+                                            </Button>
+                                        </div>
+                                        <Button
+                                            onClick={updatePassword}
+                                            disabled={passwordUpdating || newPassword === currentPassword}
+                                            size="sm"
+                                            className="w-full"
+                                        >
+                                            {passwordUpdating ? "Updating..." : "Update Password"}
+                                        </Button>
+                                    </div>
+                                </>
+                            )}
+                        </CardContent>
+                    </Card>
                 </div>
 
                 {/* Add New Test Button */}
@@ -312,6 +439,19 @@ export default function AdminMockTest() {
                                     />
                                 </div>
                                 <div className="flex flex-col gap-2">
+                                    <label htmlFor="add-url" className="text-sm">
+                                        Mock Test URL
+                                    </label>
+                                    <Input
+                                        id="add-URL"
+                                        name="link"
+                                        type="text"
+                                        value={formData.link}
+                                        onChange={handleInputChange}
+                                        placeholder="Test URL"
+                                    />
+                                </div>
+                                <div className="flex flex-col gap-2">
                                     <label htmlFor="add-description" className="text-sm">
                                         Description
                                     </label>
@@ -364,6 +504,7 @@ export default function AdminMockTest() {
                                         <TableHead className="font-semibold">Duration</TableHead>
                                         <TableHead className="font-semibold">Questions</TableHead>
                                         <TableHead className="font-semibold">Description</TableHead>
+                                        <TableHead className="font-semibold">Link</TableHead>
                                         <TableHead className="font-semibold">Actions</TableHead>
                                     </TableRow>
                                 </TableHeader>
@@ -377,6 +518,7 @@ export default function AdminMockTest() {
                                             <TableCell className="py-4">{test.duration}</TableCell>
                                             <TableCell className="py-4">{test.questions}</TableCell>
                                             <TableCell className="max-w-xs truncate py-4">{test.description}</TableCell>
+                                            <TableCell className="max-w-xs truncate py-4">{test.link}</TableCell>
                                             <TableCell className="py-4">
                                                 <div className="flex gap-2">
                                                     <Button variant="outline" size="sm" onClick={() => handleEditClick(test)}>
@@ -392,8 +534,7 @@ export default function AdminMockTest() {
                                                             <AlertDialogHeader>
                                                                 <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                                                                 <AlertDialogDescription>
-                                                                    {`   This action cannot be undone. This will permanently delete the mock test "${test.title}
-                                                                    ".`}
+                                                                    {`This action cannot be undone. This will permanently delete the mock test "${test.title}".`}
                                                                 </AlertDialogDescription>
                                                             </AlertDialogHeader>
                                                             <AlertDialogFooter>
@@ -483,6 +624,19 @@ export default function AdminMockTest() {
                                     onChange={handleInputChange}
                                     placeholder="Number of questions"
                                     min="1"
+                                />
+                            </div>
+                            <div className="flex flex-col gap-2">
+                                <label htmlFor="add-url" className="text-sm">
+                                    Mock Test URL
+                                </label>
+                                <Input
+                                    id="add-URL"
+                                    name="link"
+                                    type="text"
+                                    value={formData.link}
+                                    onChange={handleInputChange}
+                                    placeholder="Test URL"
                                 />
                             </div>
                             <div className="flex flex-col gap-2">
