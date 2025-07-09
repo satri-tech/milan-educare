@@ -23,11 +23,53 @@ model MockTest {
   duration    String
   questions   Int
   description String
-  link        String 
+  link        String
 }
 
 model Settings {
   id               String   @id @default("global") // fixed ID
   mockTestPassword String
   updatedAt        DateTime @updatedAt
+}
+
+model Grade {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  subjects  Subject[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Subject {
+  id        Int      @id @default(autoincrement())
+  name      String
+  grade     Grade    @relation(fields: [gradeId], references: [id])
+  gradeId   Int
+  topics    Topic[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([name, gradeId])
+}
+
+model Topic {
+  id        Int      @id @default(autoincrement())
+  title     String
+  subject   Subject  @relation(fields: [subjectId], references: [id])
+  subjectId Int
+  pdfs      Pdf[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([title, subjectId])
+}
+
+model Pdf {
+  id        Int      @id @default(autoincrement())
+  name      String
+  url       String
+  topic     Topic    @relation(fields: [topicId], references: [id])
+  topicId   Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

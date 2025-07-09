@@ -2,8 +2,8 @@ import { ArrowRight } from "lucide-react";
 
 export default function WelcomeText() {
     return (
-        <div id="home" className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-emerald-50/30">
-            <div className="relative pt-5  ">
+        <div id="home" className="relative overflow-hidden pt-5">
+            <div className="relative pt-2  ">
                 <div className="max-w-6xl mx-auto">
                     <div className="text-center">
                         <div
@@ -29,7 +29,7 @@ export default function WelcomeText() {
                             Welcome to{' '}
                             <span className="relative">
                                 <span className="bg-gradient-to-r from-primary to-primary/90 bg-clip-text text-transparent">
-                                    Milan EduCare
+                                    Milan <br /> EduCare
                                 </span>
                                 <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
                             </span>

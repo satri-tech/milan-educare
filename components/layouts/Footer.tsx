@@ -103,7 +103,7 @@ export default function Footer() {
                 </div>
             </div>
             <div className="w-11/12 flex justify-end text-secondary-text text-sm pt-4   border-t-[0.5px] border-secondary-text">
-                © 2024 Mantra Architects. All rights reserved
+                © 2025 Milan Educare. All rights reserved
             </div>
         </div>
     );
