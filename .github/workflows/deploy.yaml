@@ -1,0 +1,54 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Build application
+      run: npm run build
+    
+    - name: Deploy to VPS
+      uses: appleboy/ssh-action@v0.1.7
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        script: |
+          cd /home/satri/web/milan-educare
+          
+          # Pull latest changess
+          git pull origin main
+          
+          # Install dependencies
+          npm install
+          
+          # Build the application
+          npm run build
+          
+          # Update database schema
+          npx prisma generate
+          npx prisma migrate deploy
+          
+          # Restart PM2 process with updated environment
+          pm2 restart milan-educare --update-env
+          
+          # Show PM2 status
+          pm2 status
