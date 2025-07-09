@@ -24,8 +24,8 @@ export default function NotesPage() {
             if (!response.ok) throw new Error(data.error || "Failed to fetch grades")
 
             setGrades(data.data)
-        } catch (error: any) {
-            toast.error(error?.message)
+        } catch  {
+            toast.error("Internal Server Error")
         } finally {
             setLoading(false)
         }
