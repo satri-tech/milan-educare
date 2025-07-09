@@ -26,7 +26,7 @@ export default function WelcomeText() {
                             </div>
                         </div>
                         <div className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 mt-6 leading-tight">
-                            Welcome to{' '}
+                            Welcome very very to{' '}
                             <span className="relative">
                                 <span className="bg-gradient-to-r from-primary to-primary/90 bg-clip-text text-transparent">
                                     Milan EduCare
