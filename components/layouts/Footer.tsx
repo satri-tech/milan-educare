@@ -10,42 +10,42 @@ import {
 } from "react-icons/fa";
 
 export default function Footer() {
-    const links = [
-        { title: "Home", id: "home" },
-        { title: "Mock Test", id: "mocks" },
-        { title: "NEB Notes", id: "notes" },
-        { title: "About Us", id: "about" },
-        { title: "Contact Us", id: "contact" },
-    ];
+    // const links = [
+    //     { title: "Home", id: "home" },
+    //     { title: "Mock Test", id: "mocks" },
+    //     { title: "NEB Notes", id: "notes" },
+    //     { title: "About Us", id: "about" },
+    //     { title: "Contact Us", id: "contact" },
+    // ];
 
-    const socialmedia = [
-        {
-            name: "Facebook",
-            href: "#",
-            icon: FaFacebookSquare,
-        },
-        {
-            name: "Instagram",
-            href: "#",
-            icon: FaInstagram,
-        },
-        {
-            name: "Linkedin",
-            href: "#",
-            icon: FaLinkedin,
-        },
-        {
-            name: "Youtube",
-            href: "#",
-            icon: FaYoutube,
-        },
-    ];
+    // const socialmedia = [
+    //     {
+    //         name: "Facebook",
+    //         href: "#",
+    //         icon: FaFacebookSquare,
+    //     },
+    //     {
+    //         name: "Instagram",
+    //         href: "#",
+    //         icon: FaInstagram,
+    //     },
+    //     {
+    //         name: "Linkedin",
+    //         href: "#",
+    //         icon: FaLinkedin,
+    //     },
+    //     {
+    //         name: "Youtube",
+    //         href: "#",
+    //         icon: FaYoutube,
+    //     },
+    // ];
 
     return (
-        <div className="w-full flex flex-col items-center bg-primary/95 text-white sm:pb-5 tracking-wide ">
+        <div className="w-full flex flex-col items-center bg-primary text-white sm:pb-5 tracking-wide ">
 
-            <div className="w-10/12 flex flex-col  gap-1 font-Poppins sm:mt-14 mt-10 z-49 pb-5  ">
-                <div className=" h-32 w-full">
+            <div className="w-11/12 flex flex-col  gap-1 font-Poppins sm:mt-14 mt-10 z-49  ">
+                <div className=" h-28 w-full">
                     <div className="text-3xl font-semibold font-Poppins ">
                         Milan Educare
                     </div>
@@ -53,7 +53,7 @@ export default function Footer() {
                         Empowering Students, Enriching Futures
                     </div>
                 </div>
-
+                {/* 
                 <div className="md:flex md:flex-row flex-col  grid grid-cols-2 gap-y-10  w-full  ">
                     <div className="flex flex-col gap-4 w-full  text-xl font-Poppins">
                         {links.map((data, index) => {
@@ -100,7 +100,7 @@ export default function Footer() {
                             <div className="text-sm  ">9861366033 </div>
                         </a>
                     </div>
-                </div>
+                </div> */}
             </div>
             <div className="w-11/12 flex justify-end text-secondary-text text-sm pt-4   border-t-[0.5px] border-secondary-text">
                 © 2025 Milan Educare. All rights reserved

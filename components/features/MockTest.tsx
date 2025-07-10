@@ -13,6 +13,8 @@ import {
     DialogFooter,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
+import SectionHeader from "../common/SectionHeader"
+import { CheckCircle, ClipboardCheck, FileText, Timer } from "lucide-react"
 
 interface MockTest {
     id: string
@@ -81,11 +83,17 @@ export default function MockTest() {
 
     return (
         <div id="mocks" className="flex justify-center items-center mt-8 font-Poppins pt-8 w-screen">
-            <div className="flex w-[92%] gap-4 flex-col">
-                <div className="text-center mb-8">
-                    <h1 className="text-4xl font-bold text-foreground mb-2">Mock Tests</h1>
-                    <p className="text-lg text-muted-foreground">Test your knowledge with syllabus-based mock exams</p>
-                </div>
+            <div className="flex w-[85%] gap-4 flex-col">
+                <SectionHeader
+                    title="Mock Tests"
+                    MainIcon={FileText}
+                    AccentIcon={Timer}
+                />
+                {/* <SectionHeader
+                    title="Mock Tests"
+                    MainIcon={ClipboardCheck}
+                    AccentIcon={Timer}
+                /> */}
 
                 {mockTests && mockTests.length > 0 ? (
                     <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

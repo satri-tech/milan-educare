@@ -15,20 +15,20 @@ export default function ContactSection() {
     return (
         <section
             id="contact"
-            className="w-full py-12 md:py-24 lg:py-24 xl:py-14 xl:px-10"
+            className="w-full py-12 mt-16 h-max border-t flex justify-center"
         >
-            <div className="px-4 md:px-6">
-                <div className="flex flex-col items-center justify-center space-y-4 text-center">
+            <div className=" w-[85%] ">
+                <div className="flex flex-col items-start justify-center space-y-4  ">
                     <div className="space-y-2">
-                        <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
+                        <h2 className="text-3xl font-bold tracking-tight sm:text-5xl">
                             {contactInfo.section.title}
                         </h2>
-                        <p className="max-w-[900px] text-muted-foreground md:text-xl lg:text-base/relaxed xl:text-xl/relaxed">
+                        <p className=" text-muted-foreground ">
                             {contactInfo.section.description}
                         </p>
                     </div>
                 </div>
-                <div className="mx-auto grid max-w-[90%] items-start gap-6 py-12 lg:grid-cols-2 lg:gap-12">
+                <div className="mx-auto grid  items-start gap-6 py-12 lg:grid-cols-2 lg:gap-12">
                     {/* Contact Form */}
                     <Card className="shadow-none">
                         <CardHeader>

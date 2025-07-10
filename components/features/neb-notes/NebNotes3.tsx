@@ -5,7 +5,6 @@ import { FileText, GraduationCap, Eye, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Badge } from "@/components/ui/badge"
-import { Skeleton } from "@/components/ui/skeleton"
 import axios from "axios"
 import { toast } from "sonner"
 
@@ -68,8 +67,8 @@ export default function NebNotes() {
         );
     }
     return (
-        <div id="notes" className="flex lg:flex-row flex-col justify-center items-center mt-24 h-max border-t-[0.1px] font-sans pt-16 w-screen">
-            <div className="flex lg:w-[92%] w-[90%] sm:gap-4 gap-6 flex-col">
+        <div id="notes" className="flex flex-col justify-center items-center mt-16 h-auto border-t border-gray-200/50 font-sans pt-12 px-4 w-full bg-slate-50/30">
+            <div className="w-full max-w-6xl mx-auto gap-6 flex-col">
                 <div className="text-center mb-8">
                     <h1 className="text-4xl font-bold text-foreground mb-2">NEB Notes</h1>
                     <p className="text-lg text-muted-foreground">Complete study materials for Grade XI and XII</p>

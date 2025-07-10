@@ -1,216 +1,246 @@
 "use client"
 
-import { FileText, GraduationCap, Eye } from "lucide-react"
+import { useState, useEffect } from "react"
+import { FileText, GraduationCap, Eye, Loader2, ChevronDown, ChevronRight, BookOpen } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Badge } from "@/components/ui/badge"
+import axios from "axios"
+import { toast } from "sonner"
 
-// Sample data structure for NEB Notes
-const nebData = {
-    "Grade XI": {
-        subjects: {
-            Physics: [
-                { title: "Mechanics", url: "/pdfs/grade11/physics/mechanics.pdf" },
-                { title: "Heat and Thermodynamics", url: "/pdfs/grade11/physics/heat.pdf" },
-                { title: "Waves and Optics", url: "/pdfs/grade11/physics/waves.pdf" },
-                { title: "Electricity and Magnetism", url: "/pdfs/grade11/physics/electricity.pdf" },
-            ],
-            Chemistry: [
-                { title: "General and Physical Chemistry", url: "/pdfs/grade11/chemistry/general.pdf" },
-                { title: "Inorganic Chemistry", url: "/pdfs/grade11/chemistry/inorganic.pdf" },
-                { title: "Organic Chemistry", url: "/pdfs/grade11/chemistry/organic.pdf" },
-            ],
-            Biology: [
-                { title: "Biomolecules and Cell Biology", url: "/pdfs/grade11/biology/biomolecules.pdf" },
-                { title: "Botany", url: "/pdfs/grade11/biology/botany.pdf" },
-                { title: "Zoology", url: "/pdfs/grade11/biology/zoology.pdf" },
-            ],
-            Mathematics: [
-                { title: "Algebra", url: "/pdfs/grade11/math/algebra.pdf" },
-                { title: "Trigonometry", url: "/pdfs/grade11/math/trigonometry.pdf" },
-                { title: "Analytical Geometry", url: "/pdfs/grade11/math/geometry.pdf" },
-                { title: "Vectors", url: "/pdfs/grade11/math/vectors.pdf" },
-            ],
-            English: [
-                { title: "Grammar and Composition", url: "/pdfs/grade11/english/grammar.pdf" },
-                { title: "Literature", url: "/pdfs/grade11/english/literature.pdf" },
-            ],
-            Nepali: [
-                { title: "व्याकरण र रचना", url: "/pdfs/grade11/nepali/grammar.pdf" },
-                { title: "साहित्य", url: "/pdfs/grade11/nepali/literature.pdf" },
-            ],
-            "Computer Science": [
-                { title: "Programming Fundamentals", url: "/pdfs/grade11/computer/programming.pdf" },
-                { title: "Database Management", url: "/pdfs/grade11/computer/database.pdf" },
-                { title: "Web Technology", url: "/pdfs/grade11/computer/web.pdf" },
-            ],
-        },
-    },
-    "Grade XII": {
-        subjects: {
-            Physics: [
-                { title: "Mechanics", url: "/pdfs/grade12/physics/mechanics.pdf" },
-                { title: "Heat and Thermodynamics", url: "/pdfs/grade12/physics/heat.pdf" },
-                { title: "Geometrical Optics", url: "/pdfs/grade12/physics/optics.pdf" },
-                { title: "Electricity and Magnetism", url: "/pdfs/grade12/physics/electricity.pdf" },
-                { title: "Modern Physics", url: "/pdfs/grade12/physics/modern.pdf" },
-                { title: "Astrophysics", url: "/pdfs/grade12/physics/astrophysics.pdf" },
-            ],
-            Chemistry: [
-                { title: "General and Physical Chemistry", url: "/pdfs/grade12/chemistry/general.pdf" },
-                { title: "Inorganic Chemistry", url: "/pdfs/grade12/chemistry/inorganic.pdf" },
-                { title: "Organic Chemistry", url: "/pdfs/grade12/chemistry/organic.pdf" },
-                { title: "Applied Chemistry", url: "/pdfs/grade12/chemistry/applied.pdf" },
-            ],
-            Biology: [
-                { title: "Botany", url: "/pdfs/grade12/biology/botany.pdf" },
-                { title: "Zoology", url: "/pdfs/grade12/biology/zoology.pdf" },
-                { title: "Applied Biology", url: "/pdfs/grade12/biology/applied.pdf" },
-            ],
-            Mathematics: [
-                { title: "Algebra", url: "/pdfs/grade12/math/algebra.pdf" },
-                { title: "Calculus", url: "/pdfs/grade12/math/calculus.pdf" },
-                { title: "Statistics and Probability", url: "/pdfs/grade12/math/statistics.pdf" },
-                { title: "Vectors and 3D Geometry", url: "/pdfs/grade12/math/vectors.pdf" },
-            ],
-            English: [
-                { title: "Grammar and Composition", url: "/pdfs/grade12/english/grammar.pdf" },
-                { title: "Literature", url: "/pdfs/grade12/english/literature.pdf" },
-            ],
-            Nepali: [
-                { title: "व्याकरण र रचना", url: "/pdfs/grade12/nepali/grammar.pdf" },
-                { title: "साहित्य", url: "/pdfs/grade12/nepali/literature.pdf" },
-            ],
-            "Computer Science": [
-                { title: "Programming in C", url: "/pdfs/grade12/computer/c-programming.pdf" },
-                { title: "Object Oriented Programming", url: "/pdfs/grade12/computer/oop.pdf" },
-                { title: "Data Structure and Algorithm", url: "/pdfs/grade12/computer/dsa.pdf" },
-                { title: "Web Technology II", url: "/pdfs/grade12/computer/web2.pdf" },
-            ],
-        },
-    },
+// TypeScript interfaces for the data structure
+interface Pdf {
+    name: string;
+    url: string;
+}
+
+interface Topic {
+    title: string;
+    pdfs: Pdf[];
+}
+
+interface Subject {
+    [key: string]: Topic[];
+}
+
+interface GradeData {
+    subjects: Subject;
+}
+
+interface NebData {
+    [gradeName: string]: GradeData;
 }
 
 export default function NebNotes() {
+    const [nebData, setNebData] = useState<NebData | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [expandedGrades, setExpandedGrades] = useState<Set<string>>(new Set());
+    const [expandedSubjects, setExpandedSubjects] = useState<Set<string>>(new Set());
+    const [expandedTopics, setExpandedTopics] = useState<Set<string>>(new Set());
+
+    useEffect(() => {
+        const fetchNebData = async (): Promise<void> => {
+            try {
+                const response = await axios.get<NebData>('/api/admin/notes');
+                setNebData(response.data);
+                setLoading(false);
+            } catch (error) {
+                toast.error('Failed to load NEB data');
+                console.error('Error fetching NEB data:', error);
+                setLoading(false);
+            }
+        };
+        fetchNebData();
+    }, []);
+
+    const toggleExpansion = (key: string, type: 'grade' | 'subject' | 'topic') => {
+        const setterMap = {
+            grade: setExpandedGrades,
+            subject: setExpandedSubjects,
+            topic: setExpandedTopics
+        };
+
+        setterMap[type](prev => {
+            const newSet = new Set(prev);
+            if (newSet.has(key)) {
+                newSet.delete(key);
+            } else {
+                newSet.add(key);
+            }
+            return newSet;
+        });
+    };
+
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center mt-24">
+                <Loader2 className="animate-spin h-6 w-6 text-slate-600" />
+                <span className="ml-2 text-slate-600 font-medium">Loading NEB Notes...</span>
+            </div>
+        );
+    }
+
+    if (!nebData || Object.keys(nebData).length === 0) {
+        return (
+            <div className="flex justify-center items-center mt-24">
+                <p className="text-lg text-slate-500">No data available</p>
+            </div>
+        );
+    }
+
     return (
-        <div className="flex lg:flex-row flex-col justify-center items-center mt-24 h-max border-t-[0.1px] font-sans pt-16 w-screen">
-            <div className="flex lg:w-[92%] w-[90%] sm:gap-4 gap-6 flex-col">
-                <div className="text-center mb-8">
-                    <h1 className="text-4xl font-bold text-foreground mb-2">NEB Notes</h1>
-                    <p className="text-lg text-muted-foreground">Complete study materials for Grade XI and XII</p>
+        <div id="notes" className="flex lg:flex-row flex-col justify-center items-center mt-16 h-max border-t border-slate-200 font-sans pt-12 w-screen bg-slate-50/30">
+            <div className="flex lg:w-[90%] w-[92%] gap-6 flex-col">
+                {/* Header */}
+                <div className="text-center mb-6">
+                    <h1 className="text-3xl font-bold text-slate-800 mb-2">NEB Study Materials</h1>
+                    <p className="text-slate-600 font-medium">Complete notes and resources for Grade XI and XII</p>
                 </div>
 
-                <div className="space-y-8">
-                    {Object.entries(nebData).map(([grade, gradeData]) => (
-                        <div
-                            key={grade}
-                            className="group relative overflow-hidden rounded-2xl border border-border bg-card shadow-lg hover:shadow-xl transition-all duration-300"
-                        >
-                            {/* Static Grade Header - Always Visible */}
-                            <div className="relative px-8 py-6 bg-primary">
-                                {/* Background pattern */}
-                                <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=60 height=60 viewBox=0 0 60 60 xmlns=http://www.w3.org/2000/svg%3E%3Cg fill=none fillRule=evenodd%3E%3Cg fill=%23ffffff fillOpacity=0.05%3E%3Ccircle cx=30 cy=30 r=2/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-30" />
-
-                                <div className="relative flex items-center justify-between">
-                                    <div className="flex items-center gap-5">
-                                        <div className="w-14 h-14 bg-secondary rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                                            <GraduationCap className="h-7 w-7 text-secondary-foreground" />
-                                        </div>
-                                        <div>
-                                            <h2 className="text-2xl font-bold text-primary-foreground mb-1">{grade}</h2>
-                                            <p className="text-primary-foreground/70 text-sm font-medium">Science Faculty • NEB Curriculum</p>
+                {/* Tree Structure */}
+                <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                    {Object.entries(nebData).map(([grade, gradeData]: [string, GradeData]) => (
+                        <div key={grade} className="border-b border-slate-100 last:border-b-0">
+                            {/* Grade Level */}
+                            <div
+                                className="flex items-center justify-between p-6 cursor-pointer hover:bg-slate-50/80 transition-colors"
+                                onClick={() => toggleExpansion(grade, 'grade')}
+                            >
+                                <div className="flex items-center gap-4">
+                                    <div className="flex items-center gap-2">
+                                        {expandedGrades.has(grade) ? (
+                                            <ChevronDown className="h-5 w-5 text-slate-500" />
+                                        ) : (
+                                            <ChevronRight className="h-5 w-5 text-slate-500" />
+                                        )}
+                                        <div className="w-10 h-10 bg-teal-100 rounded-xl flex items-center justify-center">
+                                            <GraduationCap className="h-5 w-5 text-teal-600" />
                                         </div>
                                     </div>
-                                    <div className="flex items-center gap-3">
-                                        <Badge
-                                            variant="secondary"
-                                            className="bg-primary-foreground/10 text-primary-foreground border-primary-foreground/20 hover:bg-primary-foreground/20 transition-colors"
-                                        >
-                                            {Object.keys(gradeData.subjects).length} Subjects
-                                        </Badge>
+                                    <div>
+                                        <h2 className="text-lg font-bold text-slate-800">{grade}</h2>
+                                        <p className="text-sm text-slate-500 font-medium">Science Faculty • NEB Curriculum</p>
                                     </div>
                                 </div>
+                                <Badge
+                                    variant="outline"
+                                    className="bg-slate-50 text-slate-600 border-slate-200 font-medium"
+                                >
+                                    {Object.keys(gradeData.subjects).length} subjects
+                                </Badge>
                             </div>
 
-                            {/* Subjects Accordion - Always Expanded */}
-                            <div className="relative p-8 bg-card">
-                                <Accordion type="multiple" className="space-y-4">
-                                    {Object.entries(gradeData.subjects).map(([subject, topics]) => (
-                                        <AccordionItem
-                                            key={subject}
-                                            value={subject}
-                                            className="border-0 rounded-xl bg-card shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden group/subject"
-                                        >
-                                            <AccordionTrigger className="px-6 py-5 hover:no-underline hover:bg-muted transition-all duration-300 group-hover/subject:bg-muted [&[data-state=open]]:bg-muted">
-                                                <div className="flex items-center gap-4 flex-1">
-                                                    <div className="w-12 h-12 bg-muted rounded-xl flex items-center justify-center shadow-sm group-hover/subject:shadow-md transition-all duration-300 group-hover/subject:scale-105">
-                                                        <FileText className="h-6 w-6 text-muted-foreground" />
-                                                    </div>
-                                                    <div className="text-left flex-1">
-                                                        <div className="flex items-center gap-3 mb-1">
-                                                            <h3 className="text-lg font-bold text-foreground group-hover/subject:text-primary transition-colors">
-                                                                {subject}
-                                                            </h3>
-                                                            <Badge
-                                                                variant="outline"
-                                                                className="bg-secondary text-secondary-foreground border-border text-xs font-semibold px-2 py-1"
-                                                            >
-                                                                {topics.length} topics
-                                                            </Badge>
+                            {/* Subjects */}
+                            {expandedGrades.has(grade) && (
+                                <div className="bg-slate-50/50 border-t border-slate-100">
+                                    {Object.entries(gradeData.subjects).map(([subject, topics]: [string, Topic[]]) => (
+                                        <div key={subject} className="border-b border-slate-100 last:border-b-0">
+                                            <div
+                                                className="flex items-center justify-between p-5 pl-16 cursor-pointer hover:bg-white/70 transition-colors"
+                                                onClick={() => toggleExpansion(`${grade}-${subject}`, 'subject')}
+                                            >
+                                                <div className="flex items-center gap-3">
+                                                    <div className="flex items-center gap-2">
+                                                        {expandedSubjects.has(`${grade}-${subject}`) ? (
+                                                            <ChevronDown className="h-4 w-4 text-slate-500" />
+                                                        ) : (
+                                                            <ChevronRight className="h-4 w-4 text-slate-500" />
+                                                        )}
+                                                        <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                                                            <BookOpen className="h-4 w-4 text-blue-600" />
                                                         </div>
-                                                        <p className="text-sm text-muted-foreground font-medium">Complete study materials and notes</p>
+                                                    </div>
+                                                    <div>
+                                                        <h3 className="font-semibold text-slate-800">{subject}</h3>
+                                                        <p className="text-xs text-slate-500 font-medium">Study materials and notes</p>
                                                     </div>
                                                 </div>
-                                            </AccordionTrigger>
-                                            <AccordionContent className="px-6 pb-6 bg-muted/50">
-                                                <div className="border-t border-border pt-4">
-                                                    <div className="grid gap-3">
-                                                        {topics.map((topic, index) => (
+                                                <Badge
+                                                    variant="outline"
+                                                    className="bg-white text-slate-600 border-slate-200 text-xs font-medium"
+                                                >
+                                                    {topics.length} topics
+                                                </Badge>
+                                            </div>
+
+                                            {/* Topics */}
+                                            {expandedSubjects.has(`${grade}-${subject}`) && (
+                                                <div className="bg-white/50">
+                                                    {topics.map((topic: Topic, topicIndex: number) => (
+                                                        <div key={topicIndex} className="border-b border-slate-100 last:border-b-0">
                                                             <div
-                                                                key={index}
-                                                                className="group/topic relative flex items-center justify-between p-4 rounded-xl hover:bg-card hover:shadow-md transition-all duration-300 border border-transparent hover:border-border cursor-pointer"
+                                                                className="flex items-center justify-between p-4 pl-24 cursor-pointer hover:bg-slate-50/80 transition-colors"
+                                                                onClick={() => toggleExpansion(`${grade}-${subject}-${topicIndex}`, 'topic')}
                                                             >
-                                                                {/* Topic content */}
-                                                                <div className="flex items-center gap-4 flex-1">
-                                                                    <div className="w-8 h-8 bg-secondary rounded-lg flex items-center justify-center group-hover/topic:scale-110 transition-transform duration-300">
-                                                                        <FileText className="h-4 w-4 text-secondary-foreground" />
-                                                                    </div>
-                                                                    <div className="flex-1">
-                                                                        <span className="text-card-foreground font-semibold text-sm group-hover/topic:text-primary transition-colors">
-                                                                            {topic.title}
-                                                                        </span>
-                                                                        <div className="flex items-center gap-2 mt-1">
-                                                                            <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
-                                                                            <span className="text-xs text-muted-foreground font-medium">PDF Available</span>
+                                                                <div className="flex items-center gap-3">
+                                                                    <div className="flex items-center gap-2">
+                                                                        {expandedTopics.has(`${grade}-${subject}-${topicIndex}`) ? (
+                                                                            <ChevronDown className="h-4 w-4 text-slate-500" />
+                                                                        ) : (
+                                                                            <ChevronRight className="h-4 w-4 text-slate-500" />
+                                                                        )}
+                                                                        <div className="w-7 h-7 bg-slate-100 rounded-lg flex items-center justify-center">
+                                                                            <FileText className="h-3.5 w-3.5 text-slate-600" />
                                                                         </div>
                                                                     </div>
+                                                                    <div>
+                                                                        <h4 className="font-semibold text-slate-800 text-sm">{topic.title}</h4>
+                                                                        <p className="text-xs text-slate-500 font-medium">
+                                                                            {topic.pdfs.length} PDF files
+                                                                        </p>
+                                                                    </div>
                                                                 </div>
-
-                                                                {/* Action button */}
-                                                                <Button
-                                                                    size="sm"
-                                                                    className="opacity-0 group-hover/topic:opacity-100 transition-all duration-300 bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl border-0 h-9 px-4"
-                                                                    asChild
+                                                                <Badge
+                                                                    variant="outline"
+                                                                    className="bg-slate-50 text-slate-600 border-slate-200 text-xs font-medium"
                                                                 >
-                                                                    <a
-                                                                        href={topic.url}
-                                                                        target="_blank"
-                                                                        rel="noopener noreferrer"
-                                                                        className="flex items-center gap-2"
-                                                                    >
-                                                                        <Eye className="h-4 w-4" />
-                                                                        <span className="text-xs font-semibold">View PDF</span>
-                                                                    </a>
-                                                                </Button>
+                                                                    {topic.pdfs.length} PDFs
+                                                                </Badge>
                                                             </div>
-                                                        ))}
-                                                    </div>
+
+                                                            {/* PDFs */}
+                                                            {expandedTopics.has(`${grade}-${subject}-${topicIndex}`) && (
+                                                                <div className="bg-slate-50/30">
+                                                                    {topic.pdfs.map((pdf, pdfIndex) => (
+                                                                        <div
+                                                                            key={pdfIndex}
+                                                                            className="flex items-center justify-between p-3 pl-32 hover:bg-white/70 transition-colors group"
+                                                                        >
+                                                                            <div className="flex items-center gap-3">
+                                                                                <div className="w-6 h-6 bg-teal-50 rounded-md flex items-center justify-center">
+                                                                                    <FileText className="h-3 w-3 text-teal-600" />
+                                                                                </div>
+                                                                                <span className="text-sm font-medium text-slate-700 group-hover:text-teal-700 transition-colors">
+                                                                                    {pdf.name}
+                                                                                </span>
+                                                                            </div>
+                                                                            <Button
+                                                                                size="sm"
+                                                                                variant="ghost"
+                                                                                className="opacity-0 group-hover:opacity-100 transition-all duration-200 h-8 px-3 text-teal-600 hover:text-teal-700 hover:bg-teal-50"
+                                                                                asChild
+                                                                            >
+                                                                                <a
+                                                                                    href={pdf.url}
+                                                                                    target="_blank"
+                                                                                    rel="noopener noreferrer"
+                                                                                    className="flex items-center gap-1"
+                                                                                >
+                                                                                    <Eye className="h-3 w-3" />
+                                                                                    <span className="text-xs font-medium">View</span>
+                                                                                </a>
+                                                                            </Button>
+                                                                        </div>
+                                                                    ))}
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    ))}
                                                 </div>
-                                            </AccordionContent>
-                                        </AccordionItem>
+                                            )}
+                                        </div>
                                     ))}
-                                </Accordion>
-                            </div>
+                                </div>
+                            )}
                         </div>
                     ))}
                 </div>

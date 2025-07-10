@@ -8,7 +8,7 @@ import {
 import { FaFacebookF, FaInstagram, FaLinkedin, FaYoutube } from 'react-icons/fa';
 export const contactInfo = {
   section: {
-    title: "Connect with Milan Educare",
+    title: "CONTACT US",
     description:
       "Have questions about admissions, courses, or collaborations? Reach out to our team and we'll get back to you shortly....",
     badge: "We're Here to Help",
