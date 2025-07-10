@@ -1,91 +1,72 @@
 "use client"
 
-import { FileText, GraduationCap, Eye } from "lucide-react"
+import { useState, useEffect } from "react"
+import { FileText, GraduationCap, Eye, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Badge } from "@/components/ui/badge"
+import { Skeleton } from "@/components/ui/skeleton"
+import axios from "axios"
+import { toast } from "sonner"
 
-// Sample data structure for NEB Notes with multiple PDFs per topic
-const nebData = {
-    "Grade XI": {
-        subjects: {
-            Physics: [
-                {
-                    title: "Mechanics",
-                    pdfs: [
-                        { name: "Chapter 1: Motion", url: "/pdfs/grade11/physics/mechanics/ch1-motion.pdf" },
-                        { name: "Chapter 2: Force", url: "/pdfs/grade11/physics/mechanics/ch2-force.pdf" },
-                        { name: "Practice Problems", url: "/pdfs/grade11/physics/mechanics/problems.pdf" }
-                    ]
-                },
-                {
-                    title: "Heat and Thermodynamics",
-                    pdfs: [
-                        { name: "Chapter 1: Temperature", url: "/pdfs/grade11/physics/heat/ch1-temperature.pdf" },
-                        { name: "Chapter 2: Thermal Properties", url: "/pdfs/grade11/physics/heat/ch2-thermal.pdf" },
-                        { name: "Solved Examples", url: "/pdfs/grade11/physics/heat/examples.pdf" }
-                    ]
-                },
-            ],
-            Chemistry: [
-                {
-                    title: "General Chemistry",
-                    pdfs: [
-                        { name: "Chapter 1: Atomic Structure", url: "/pdfs/grade11/chemistry/general/ch1-atomic.pdf" },
-                        { name: "Chapter 2: Chemical Bonding", url: "/pdfs/grade11/chemistry/general/ch2-bonding.pdf" },
-                        { name: "Reference Tables", url: "/pdfs/grade11/chemistry/general/tables.pdf" }
-                    ]
-                },
-            ],
-            Mathematics: [
-                {
-                    title: "Algebra",
-                    pdfs: [
-                        { name: "Chapter 1: Set Theory", url: "/pdfs/grade11/math/algebra/ch1-sets.pdf" },
-                        { name: "Chapter 2: Functions", url: "/pdfs/grade11/math/algebra/ch2-functions.pdf" },
-                        { name: "Exercise Solutions", url: "/pdfs/grade11/math/algebra/solutions.pdf" }
-                    ]
-                },
-            ],
-        },
-    },
-    "Grade XII": {
-        subjects: {
-            Physics: [
-                {
-                    title: "Modern Physics",
-                    pdfs: [
-                        { name: "Chapter 1: Quantum Physics", url: "/pdfs/grade12/physics/modern/ch1-quantum.pdf" },
-                        { name: "Chapter 2: Atomic Structure", url: "/pdfs/grade12/physics/modern/ch2-atomic.pdf" },
-                        { name: "Applications", url: "/pdfs/grade12/physics/modern/applications.pdf" }
-                    ]
-                },
-            ],
-            Chemistry: [
-                {
-                    title: "Applied Chemistry",
-                    pdfs: [
-                        { name: "Chapter 1: Polymers", url: "/pdfs/grade12/chemistry/applied/ch1-polymers.pdf" },
-                        { name: "Chapter 2: Biomolecules", url: "/pdfs/grade12/chemistry/applied/ch2-biomolecules.pdf" },
-                        { name: "Industrial Applications", url: "/pdfs/grade12/chemistry/applied/industrial.pdf" }
-                    ]
-                },
-            ],
-            Mathematics: [
-                {
-                    title: "Calculus",
-                    pdfs: [
-                        { name: "Chapter 1: Limits", url: "/pdfs/grade12/math/calculus/ch1-limits.pdf" },
-                        { name: "Chapter 2: Differentiation", url: "/pdfs/grade12/math/calculus/ch2-differentiation.pdf" },
-                        { name: "Applications", url: "/pdfs/grade12/math/calculus/applications.pdf" }
-                    ]
-                },
-            ],
-        },
-    },
+// TypeScript interfaces for the data structure
+interface Pdf {
+    name: string;
+    url: string;
+}
+
+interface Topic {
+    title: string;
+    pdfs: Pdf[];
+}
+
+interface Subject {
+    [key: string]: Topic[];
+}
+
+interface GradeData {
+    subjects: Subject;
+}
+
+interface NebData {
+    [gradeName: string]: GradeData;
 }
 
 export default function NebNotes() {
+    const [nebData, setNebData] = useState<NebData | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
+
+    useEffect(() => {
+        const fetchNebData = async (): Promise<void> => {
+            try {
+                const response = await axios.get<NebData>('/api/admin/notes');
+                setNebData(response.data);
+                setLoading(false);
+            } catch (error) {
+                toast.error('Failed to load NEB data');
+                console.error('Error fetching NEB data:', error);
+                setLoading(false);
+            }
+        };
+        fetchNebData();
+    }, []);
+
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center mt-24">
+                <Loader2 className="animate-spin h-6 w-6 text-primary" />
+                <span className="ml-2 text-primary">Loading NEB Notes...</span>
+            </div>
+        );
+    }
+
+    if (!nebData || Object.keys(nebData).length === 0) {
+        return (
+            <div className="flex justify-center items-center mt-24">
+                <p className="text-lg text-muted-foreground">No data available</p>
+            </div>
+        );
+    }
     return (
         <div id="notes" className="flex lg:flex-row flex-col justify-center items-center mt-24 h-max border-t-[0.1px] font-sans pt-16 w-screen">
             <div className="flex lg:w-[92%] w-[90%] sm:gap-4 gap-6 flex-col">
@@ -94,7 +75,7 @@ export default function NebNotes() {
                     <p className="text-lg text-muted-foreground">Complete study materials for Grade XI and XII</p>
                 </div>
                 <div className="space-y-8">
-                    {Object.entries(nebData).map(([grade, gradeData]) => (
+                    {Object.entries(nebData).map(([grade, gradeData]: [string, GradeData]) => (
                         <div
                             key={grade}
                             className="group relative overflow-hidden rounded-2xl border border-border bg-card shadow-lg hover:shadow-xl transition-all duration-300"
@@ -127,7 +108,7 @@ export default function NebNotes() {
                             {/* Subjects Accordion */}
                             <div className="relative p-8 bg-card">
                                 <Accordion type="multiple" className="space-y-4 mb-10">
-                                    {Object.entries(gradeData.subjects).map(([subject, topics]) => (
+                                    {Object.entries(gradeData.subjects).map(([subject, topics]: [string, Topic[]]) => (
                                         <AccordionItem
                                             key={subject}
                                             value={subject}
@@ -157,7 +138,7 @@ export default function NebNotes() {
                                             <AccordionContent className="px-6 pb-6 bg-muted/50">
                                                 <div className="border-t  border-border pt-4">
                                                     <div className="grid gap-4 ">
-                                                        {topics.map((topic, topicIndex) => (
+                                                        {topics.map((topic: Topic, topicIndex: number) => (
                                                             <div
                                                                 key={topicIndex}
                                                                 className="group/topic relative rounded-xl border border-border bg-card p-4 hover:shadow-md transition-all duration-300 "
