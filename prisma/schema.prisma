@@ -33,18 +33,18 @@ model Settings {
 }
 
 model Grade {
-  id        Int       @id @default(autoincrement())
+  id        String    @id @default(uuid())
   name      String    @unique
-  subjects  Subject[]
+  subjects  Subject[] // no need to set onDelete here
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
 
 model Subject {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid())
   name      String
-  grade     Grade    @relation(fields: [gradeId], references: [id])
-  gradeId   Int
+  grade     Grade    @relation(fields: [gradeId], references: [id], onDelete: Cascade)
+  gradeId   String
   topics    Topic[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -53,10 +53,10 @@ model Subject {
 }
 
 model Topic {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid())
   title     String
-  subject   Subject  @relation(fields: [subjectId], references: [id])
-  subjectId Int
+  subject   Subject  @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  subjectId String
   pdfs      Pdf[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -65,11 +65,11 @@ model Topic {
 }
 
 model Pdf {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid())
   name      String
   url       String
-  topic     Topic    @relation(fields: [topicId], references: [id])
-  topicId   Int
+  topic     Topic    @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  topicId   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

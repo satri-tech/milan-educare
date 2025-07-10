@@ -5,7 +5,7 @@ import GradesList from "./grades-list" // Changed from notes-list to grades-list
 import { Skeleton } from "@/components/ui/skeleton"
 import { toast } from "sonner"
 export interface Grade {
-    id: number
+    id: string
     name: string
     createdAt: string
     updatedAt: string
@@ -24,7 +24,7 @@ export default function NotesPage() {
             if (!response.ok) throw new Error(data.error || "Failed to fetch grades")
 
             setGrades(data.data)
-        } catch  {
+        } catch {
             toast.error("Internal Server Error")
         } finally {
             setLoading(false)
@@ -33,6 +33,9 @@ export default function NotesPage() {
 
     const handleGradeAdded = (newGrade: Grade) => {
         setGrades(prevGrades => [newGrade, ...prevGrades]) // Adds new grade at beginning
+    }
+    const handleDeleteGrade = (gradeId: string) => {
+        setGrades((prevGrades) => prevGrades.filter((grade) => grade.id !== gradeId))
     }
     useEffect(() => {
         fetchGrades()
@@ -57,7 +60,7 @@ export default function NotesPage() {
                     <Skeleton className="h-40 w-full" />
                 </div>
             ) : (
-                <GradesList grades={grades} />
+                <GradesList grades={grades} onGradeDeleted={handleDeleteGrade} />
             )}
         </div>
     )
