@@ -35,7 +35,7 @@ export default function AddGrade({ onGradeAdded }: GradesProps) {
         setIsSubmitting(true)
 
         try {
-            const response = await axios.post('/api/admin/neb-notes/grades', {
+            const response = await axios.post('/api/admin/notes/grades', {
                 grade: gradeName.trim()
             })
             const data = response.data

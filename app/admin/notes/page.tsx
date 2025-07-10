@@ -4,6 +4,7 @@ import AddGrade from "./add-grade"
 import GradesList from "./grades-list" // Changed from notes-list to grades-list for consistency
 import { Skeleton } from "@/components/ui/skeleton"
 import { toast } from "sonner"
+import axios from "axios"
 export interface Grade {
     id: string
     name: string
@@ -18,10 +19,10 @@ export default function NotesPage() {
     const fetchGrades = async () => {
         try {
             setLoading(true)
-            const response = await fetch('/api/admin/neb-notes/grades')
-            const data = await response.json()
+            const response = await axios.get('/api/admin/notes/grades')
+            const data = await response.data
 
-            if (!response.ok) throw new Error(data.error || "Failed to fetch grades")
+            if (!response) throw new Error(data.error || "Failed to fetch grades")
 
             setGrades(data.data)
         } catch {
