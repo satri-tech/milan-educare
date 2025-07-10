@@ -25,8 +25,11 @@ export default function DeleteGrade({ gradeId, onDelete }: IDeleteGradeProps) {
             await axios.delete(`/api/admin/neb-notes/grades/${gradeId}`);
             toast.success("Grade deleted successfully");
             if (onDelete) onDelete(gradeId); // Pass the deleted grade ID to parent
-        } catch (error: any) {
-            toast.error(error.response?.data?.error || "Failed to delete grade");
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error && 'response' in error 
+                ? (error as { response?: { data?: { error?: string } } }).response?.data?.error || "Failed to delete grade"
+                : "Failed to delete grade";
+            toast.error(errorMessage);
         } finally {
             setLoading(false);
         }

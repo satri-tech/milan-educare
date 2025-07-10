@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import SectionHeader from "../common/SectionHeader"
-import { CheckCircle, ClipboardCheck, FileText, Timer } from "lucide-react"
+import { FileText, Timer } from "lucide-react"
 
 interface MockTest {
     id: string

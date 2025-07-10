@@ -1,7 +1,25 @@
-// @ts-nocheck
-
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
+
+interface PdfData {
+  name: string;
+  url: string;
+}
+
+interface TopicData {
+  title: string;
+  pdfs: PdfData[];
+}
+
+interface SubjectData {
+  [subjectName: string]: TopicData[];
+}
+
+interface GradeData {
+  subjects: SubjectData;
+}
+
+type NebData = Record<string, GradeData>;
 
 // get the data on the format the frontend needs
 export async function GET() {
@@ -21,7 +39,7 @@ export async function GET() {
       orderBy: { id: "asc" },
     });
 
-    const nebData: Record<string, any> = {};
+    const nebData: NebData = {};
 
     for (const grade of grades) {
       const gradeName = grade.name;

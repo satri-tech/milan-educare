@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect, use } from "react"
+import { useState, useEffect, use, useCallback } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -52,7 +52,7 @@ export default function Page({ params }: { params: Promise<{ gradeId: string }> 
     const [selectedSubjectId, setSelectedSubjectId] = useState("")
     const [selectedTopicId, setSelectedTopicId] = useState("")
 
-    const fetchGradeData = async () => {
+    const fetchGradeData = useCallback(async () => {
         try {
             setLoading(true)
             const response = await axios.get(`/api/admin/notes/${gradeId}`)
@@ -69,7 +69,7 @@ export default function Page({ params }: { params: Promise<{ gradeId: string }> 
         } finally {
             setLoading(false)
         }
-    }
+    }, [gradeId])
 
     const handleAddSubject = async () => {
         if (!subjectName.trim()) {
@@ -96,8 +96,9 @@ export default function Page({ params }: { params: Promise<{ gradeId: string }> 
             toast.success("Subject added successfully")
             setSubjectName("")
             fetchGradeData() // Refresh the data
-        } catch (error: any) {
-            toast.error(error.message)
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : 'An error occurred';
+            toast.error(errorMessage)
         } finally {
             setIsAddingSubject(false)
         }
@@ -133,8 +134,9 @@ export default function Page({ params }: { params: Promise<{ gradeId: string }> 
             setTopicTitle("")
             setSelectedSubjectId("")
             fetchGradeData() // Refresh the data
-        } catch (error: any) {
-            toast.error(error.message)
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : 'An error occurred';
+            toast.error(errorMessage)
         } finally {
             setIsAddingTopic(false)
         }
@@ -178,8 +180,9 @@ export default function Page({ params }: { params: Promise<{ gradeId: string }> 
             setPdfUrl("")
             setSelectedTopicId("")
             fetchGradeData() // Refresh the data
-        } catch (error: any) {
-            toast.error(error.message)
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : 'An error occurred';
+            toast.error(errorMessage)
         } finally {
             setIsAddingPdf(false)
         }
@@ -203,8 +206,9 @@ export default function Page({ params }: { params: Promise<{ gradeId: string }> 
 
             toast.success("Subject deleted successfully")
             fetchGradeData() // Refresh the data
-        } catch (error: any) {
-            toast.error(error.message)
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : 'An error occurred';
+            toast.error(errorMessage)
         }
     }
 
@@ -226,8 +230,9 @@ export default function Page({ params }: { params: Promise<{ gradeId: string }> 
 
             toast.success("Topic deleted successfully")
             fetchGradeData() // Refresh the data
-        } catch (error: any) {
-            toast.error(error.message)
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : 'An error occurred';
+            toast.error(errorMessage)
         }
     }
 
@@ -249,14 +254,15 @@ export default function Page({ params }: { params: Promise<{ gradeId: string }> 
 
             toast.success("PDF deleted successfully")
             fetchGradeData() // Refresh the data
-        } catch (error: any) {
-            toast.error(error.message)
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : 'An error occurred';
+            toast.error(errorMessage)
         }
     }
 
     useEffect(() => {
         fetchGradeData()
-    }, [gradeId])
+    }, [gradeId, fetchGradeData])
 
     if (loading) {
         return (

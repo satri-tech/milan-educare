@@ -1,13 +1,4 @@
 import React from "react";
-import { CiMail } from "react-icons/ci";
-import { BsTelephone } from "react-icons/bs";
-
-import {
-    FaInstagram,
-    FaFacebookSquare,
-    FaLinkedin,
-    FaYoutube,
-} from "react-icons/fa";
 
 export default function Footer() {
     // const links = [

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { FileText, GraduationCap, Eye, Loader2, ChevronDown, ChevronRight, BookOpen, Sparkles, Users, Award } from "lucide-react"
+import { FileText, GraduationCap, Eye, Loader2, ChevronDown, ChevronRight, BookOpen } from "lucide-react"
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { toast } from "sonner";

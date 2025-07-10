@@ -1,7 +1,6 @@
 import { Card, CardHeader, CardTitle } from "@/components/ui/card"
 import { Grade } from "./page";
 import Link from "next/link";
-import { MoreHorizontal, Trash } from "lucide-react";
 import DeleteGrade from "./delete-grade";
 interface GradesListProps {
     grades: Grade[]
