@@ -1,48 +1,45 @@
 "use client"
-import { useState, useEffect } from "react"
+import { useState, useEffect, use } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { Plus, Trash2, FileText, ArrowLeft } from "lucide-react"
+import { Plus, Trash, FileText, ArrowLeft } from "lucide-react"
 import { toast } from "sonner"
 import Link from "next/link"
 import { Skeleton } from "@/components/ui/skeleton"
+import axios from "axios"
 
 interface Pdf {
-  id: string
-  name: string
-  url: string
-  createdAt: string
+    id: string
+    name: string
+    url: string
+    createdAt: string
 }
 
 interface Topic {
-  id: string
-  title: string
-  pdfs: Pdf[]
-  createdAt: string
+    id: string
+    title: string
+    pdfs: Pdf[]
+    createdAt: string
 }
 
 interface Subject {
-  id: string
-  name: string
-  topics: Topic[]
-  createdAt: string
+    id: string
+    name: string
+    topics: Topic[]
+    createdAt: string
 }
 
 interface Grade {
-  id: string
-  name: string
-  subjects: Subject[]
-  createdAt: string
+    id: string
+    name: string
+    subjects: Subject[]
+    createdAt: string
 }
 
-export default function GradePage({
-    params,
-}: {
-    params: { gradeId: string }
-}) {
+export default function Page({ params }: { params: Promise<{ gradeId: string }> }) {
+    const { gradeId } = use(params); // ✅ new way
     const [grade, setGrade] = useState<Grade | null>(null)
     const [loading, setLoading] = useState(true)
     const [subjectName, setSubjectName] = useState("")
@@ -58,10 +55,10 @@ export default function GradePage({
     const fetchGradeData = async () => {
         try {
             setLoading(true)
-            const response = await fetch(`/api/admin/notes/${params.gradeId}`)
-            const data = await response.json()
+            const response = await axios.get(`/api/admin/notes/${gradeId}`)
+            const data = response.data
 
-            if (!response.ok) {
+            if (!response) {
                 throw new Error(data.error || "Failed to fetch grade data")
             }
 
@@ -82,7 +79,7 @@ export default function GradePage({
 
         try {
             setIsAddingSubject(true)
-            const response = await fetch(`/api/admin/notes/${params.gradeId}`, {
+            const response = await fetch(`/api/admin/notes/${gradeId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -164,7 +161,7 @@ export default function GradePage({
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ 
+                body: JSON.stringify({
                     name: pdfName.trim(),
                     url: pdfUrl.trim()
                 }),
@@ -259,7 +256,7 @@ export default function GradePage({
 
     useEffect(() => {
         fetchGradeData()
-    }, [params.gradeId])
+    }, [gradeId])
 
     if (loading) {
         return (
@@ -291,10 +288,10 @@ export default function GradePage({
     }
 
     return (
-        <div className="container mx-auto py-8 px-4">
+        <div className="container mx-auto  px-4">
             {/* Header */}
             <div className="flex items-center justify-between mb-8">
-                <div className="flex items-center gap-4">
+                <div className="flex flex-col gap-4">
                     <Link href="/admin/notes">
                         <Button variant="outline" size="sm">
                             <ArrowLeft className="h-4 w-4 mr-2" />
@@ -328,8 +325,8 @@ export default function GradePage({
                                 onChange={(e) => setSubjectName(e.target.value)}
                                 onKeyPress={(e) => e.key === 'Enter' && handleAddSubject()}
                             />
-                            <Button 
-                                onClick={handleAddSubject} 
+                            <Button
+                                onClick={handleAddSubject}
                                 disabled={isAddingSubject}
                                 className="w-full"
                             >
@@ -352,12 +349,12 @@ export default function GradePage({
                     </CardContent>
                 </Card>
             ) : (
-                <Accordion type="multiple" className="space-y-4">
+                <div className="space-y-4">
                     {grade.subjects.map((subject) => (
-                        <AccordionItem key={subject.id} value={subject.id}>
-                            <Card>
-                                <AccordionTrigger className="hover:no-underline">
-                                    <CardHeader className="flex-row items-center justify-between w-full">
+                        <div key={subject.id} className=" border-none">
+                            < Card className="py-2">
+                                <div className="hover:no-underline  ">
+                                    <CardHeader className="flex flex-row items-center justify-between w-full">
                                         <div className="flex items-center gap-2">
                                             <CardTitle className="text-xl">{subject.name}</CardTitle>
                                             <span className="text-sm text-muted-foreground">
@@ -368,8 +365,8 @@ export default function GradePage({
                                             {/* Add Topic Dialog */}
                                             <Dialog>
                                                 <DialogTrigger asChild>
-                                                    <Button 
-                                                        variant="outline" 
+                                                    <Button
+                                                        variant="outline"
                                                         size="sm"
                                                         onClick={(e) => {
                                                             e.stopPropagation()
@@ -391,8 +388,8 @@ export default function GradePage({
                                                             onChange={(e) => setTopicTitle(e.target.value)}
                                                             onKeyPress={(e) => e.key === 'Enter' && handleAddTopic()}
                                                         />
-                                                        <Button 
-                                                            onClick={handleAddTopic} 
+                                                        <Button
+                                                            onClick={handleAddTopic}
                                                             disabled={isAddingTopic}
                                                             className="w-full"
                                                         >
@@ -401,21 +398,23 @@ export default function GradePage({
                                                     </div>
                                                 </DialogContent>
                                             </Dialog>
-                                            
-                                            <Button 
-                                                variant="destructive" 
-                                                size="sm"
+
+                                            <Button
+                                                variant="outline"
+                                                size="icon"
                                                 onClick={(e) => {
                                                     e.stopPropagation()
                                                     handleDeleteSubject(subject.id)
                                                 }}
+                                                className="hover:text-red-600 "
                                             >
-                                                <Trash2 className="h-4 w-4" />
+                                                <Trash className="h-4 w-4" />
                                             </Button>
+
                                         </div>
                                     </CardHeader>
-                                </AccordionTrigger>
-                                <AccordionContent>
+                                </div>
+                                <div>
                                     <CardContent>
                                         {subject.topics.length === 0 ? (
                                             <div className="text-center text-muted-foreground py-8">
@@ -424,7 +423,7 @@ export default function GradePage({
                                         ) : (
                                             <div className="space-y-4">
                                                 {subject.topics.map((topic) => (
-                                                    <Card key={topic.id} className="border-l-4 border-l-primary">
+                                                    <Card key={topic.id}>
                                                         <CardHeader>
                                                             <div className="flex items-center justify-between">
                                                                 <div className="flex items-center gap-2">
@@ -437,8 +436,8 @@ export default function GradePage({
                                                                     {/* Add PDF Dialog */}
                                                                     <Dialog>
                                                                         <DialogTrigger asChild>
-                                                                            <Button 
-                                                                                variant="outline" 
+                                                                            <Button
+                                                                                variant="outline"
                                                                                 size="sm"
                                                                                 onClick={() => setSelectedTopicId(topic.id)}
                                                                             >
@@ -461,8 +460,8 @@ export default function GradePage({
                                                                                     value={pdfUrl}
                                                                                     onChange={(e) => setPdfUrl(e.target.value)}
                                                                                 />
-                                                                                <Button 
-                                                                                    onClick={handleAddPdf} 
+                                                                                <Button
+                                                                                    onClick={handleAddPdf}
                                                                                     disabled={isAddingPdf}
                                                                                     className="w-full"
                                                                                 >
@@ -471,13 +470,13 @@ export default function GradePage({
                                                                             </div>
                                                                         </DialogContent>
                                                                     </Dialog>
-                                                                    
-                                                                    <Button 
-                                                                        variant="destructive" 
-                                                                        size="sm"
+                                                                    <Button
+                                                                        variant="outline"
+                                                                        size="icon"
                                                                         onClick={() => handleDeleteTopic(topic.id)}
+                                                                        className="hover:text-red-600 "
                                                                     >
-                                                                        <Trash2 className="h-4 w-4" />
+                                                                        <Trash className="h-4 w-4" />
                                                                     </Button>
                                                                 </div>
                                                             </div>
@@ -490,16 +489,19 @@ export default function GradePage({
                                                             ) : (
                                                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                                                                     {topic.pdfs.map((pdf) => (
-                                                                        <Card key={pdf.id} className="bg-muted/30">
+                                                                        <Card
+                                                                            key={pdf.id}
+                                                                            className="bg-muted/30 relative group transition-all"
+                                                                        >
                                                                             <CardContent className="p-4">
                                                                                 <div className="flex items-center justify-between">
                                                                                     <div className="flex items-center gap-2 flex-1 min-w-0">
                                                                                         <FileText className="h-4 w-4 text-primary flex-shrink-0" />
                                                                                         <div className="min-w-0 flex-1">
                                                                                             <p className="font-medium truncate">{pdf.name}</p>
-                                                                                            <a 
-                                                                                                href={pdf.url} 
-                                                                                                target="_blank" 
+                                                                                            <a
+                                                                                                href={pdf.url}
+                                                                                                target="_blank"
                                                                                                 rel="noopener noreferrer"
                                                                                                 className="text-xs text-primary hover:underline truncate block"
                                                                                             >
@@ -507,17 +509,18 @@ export default function GradePage({
                                                                                             </a>
                                                                                         </div>
                                                                                     </div>
-                                                                                    <Button 
-                                                                                        variant="destructive" 
-                                                                                        size="sm"
-                                                                                        onClick={() => handleDeletePdf(pdf.id)}
-                                                                                        className="ml-2 flex-shrink-0"
-                                                                                    >
-                                                                                        <Trash2 className="h-3 w-3" />
-                                                                                    </Button>
                                                                                 </div>
                                                                             </CardContent>
+
+                                                                            <div
+                                                                                className={`absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer ${loading ? "opacity-50 cursor-not-allowed" : "hover:text-red-600 hover:scale-105"
+                                                                                    }`}
+                                                                                onClick={() => !loading && handleDeletePdf(pdf.id)}
+                                                                            >
+                                                                                <Trash size={18} />
+                                                                            </div>
                                                                         </Card>
+
                                                                     ))}
                                                                 </div>
                                                             )}
@@ -527,12 +530,13 @@ export default function GradePage({
                                             </div>
                                         )}
                                     </CardContent>
-                                </AccordionContent>
+                                </div>
                             </Card>
-                        </AccordionItem>
-                    ))}
-                </Accordion>
+                        </div>
+                    ))
+                    }
+                </div >
             )}
-        </div>
+        </div >
     )
 }
