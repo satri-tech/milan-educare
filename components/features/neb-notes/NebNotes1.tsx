@@ -1,8 +1,15 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { FileText, GraduationCap, Eye, Loader2, ChevronDown, ChevronRight, BookOpen } from "lucide-react"
+import { FileText, GraduationCap, Eye, Loader2, ChevronDown, ChevronRight, BookOpen, X } from "lucide-react"
 import { Button } from "@/components/ui/button";
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
 import axios from "axios";
 import { toast } from "sonner";
 import SectionHeader from "@/components/common/SectionHeader";
@@ -35,7 +42,8 @@ export default function NebNotes() {
     const [loading, setLoading] = useState<boolean>(true);
     const [expandedSubjects, setExpandedSubjects] = useState<Set<string>>(new Set());
     const [expandedTopics, setExpandedTopics] = useState<Set<string>>(new Set());
-
+    const [selectedPdf, setSelectedPdf] = useState<{ name: string; url: string } | null>(null);
+    const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
     useEffect(() => {
         const fetchNebData = async (): Promise<void> => {
@@ -67,6 +75,16 @@ export default function NebNotes() {
             }
             return newSet;
         });
+    };
+
+    const handlePdfView = (pdf: Pdf) => {
+        setSelectedPdf(pdf);
+        setIsDialogOpen(true);
+    };
+
+    const handleDialogClose = () => {
+        setIsDialogOpen(false);
+        setSelectedPdf(null);
     };
 
     if (loading) {
@@ -200,17 +218,10 @@ export default function NebNotes() {
                                                                             size="sm"
                                                                             variant="ghost"
                                                                             className="opacity-0 group-hover:opacity-100 transition-all duration-200 h-8 px-3 text-teal-600 hover:text-teal-700 hover:bg-teal-50"
-                                                                            asChild
+                                                                            onClick={() => handlePdfView(pdf)}
                                                                         >
-                                                                            <a
-                                                                                href={pdf.url}
-                                                                                target="_blank"
-                                                                                rel="noopener noreferrer"
-                                                                                className="flex items-center gap-1"
-                                                                            >
-                                                                                <Eye className="h-3 w-3" />
-                                                                                <span className="text-xs font-medium">View</span>
-                                                                            </a>
+                                                                            <Eye className="h-3 w-3" />
+                                                                            <span className="text-xs font-medium ml-1">View</span>
                                                                         </Button>
                                                                     </div>
                                                                 ))}
@@ -227,6 +238,27 @@ export default function NebNotes() {
                     ))}
                 </div>
             </div>
+
+            {/* PDF Dialog */}
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <DialogContent className="max-w-6xl w-[95vw] h-[90vh] p-0">
+                    <DialogHeader className="p-6 pb-4 border-b border-slate-200">
+                        <DialogTitle className="text-lg font-semibold text-slate-800 flex items-center gap-2">
+                            <FileText className="h-5 w-5 text-teal-600" />
+                            {selectedPdf?.name}
+                        </DialogTitle>
+                    </DialogHeader>
+                    <div className="flex-1 p-6 pt-0">
+                        {selectedPdf && (
+                            <iframe
+                                src={selectedPdf.url}
+                                className="w-full h-full border border-slate-200 rounded-lg"
+                                title={selectedPdf.name}
+                            />
+                        )}
+                    </div>
+                </DialogContent>
+            </Dialog>
         </div>
     )
 }
