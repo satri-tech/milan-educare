@@ -14,11 +14,12 @@ import {
     SidebarProvider,
     SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { BookIcon, Building, PenTool, Settings, User } from "lucide-react";
+import { BookIcon, Building, File, PenTool, Settings, User } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Outfit } from "next/font/google";
 import { ThemeProvider } from "next-themes";
+import { FaFilePdf } from "react-icons/fa";
 
 const outfit = Outfit({
     variable: "--font-outfit",
@@ -62,6 +63,11 @@ export default function AdminLayout({
                 title: "NEB Notes",
                 url: "/admin/notes",
                 icon: BookIcon,
+            },
+            {
+                title: "Pdfs",
+                url: "/admin/pdfs",
+                icon: File,
             },
             {
                 title: "Settings",

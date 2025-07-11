@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Upload, FileText, Trash2, Download, Eye } from 'lucide-react';
+import { Upload, FileText, Trash2, Download, Eye, Copy, Check, File } from 'lucide-react';
 import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
 
 interface PDFFile {
   filename: string;
@@ -16,6 +17,7 @@ export default function PdfUploader() {
   const [files, setFiles] = useState<PDFFile[]>([]);
   const [uploading, setUploading] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [copiedUrl, setCopiedUrl] = useState<string | null>(null);
 
   // Fetch existing PDFs on component mount
   useEffect(() => {
@@ -95,6 +97,34 @@ export default function PdfUploader() {
     }
   };
 
+  const getFullUrl = (url: string) => {
+    // If the URL is already absolute, return it as is
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      return url;
+    }
+
+    // If it's a relative URL, construct the full URL
+    const baseUrl = window.location.origin;
+    const fullUrl = url.startsWith('/') ? `${baseUrl}${url}` : `${baseUrl}/pdfs/${url}`;
+    return fullUrl;
+  };
+
+  const handleCopyUrl = async (url: string) => {
+    try {
+      const fullUrl = getFullUrl(url);
+      await navigator.clipboard.writeText(fullUrl);
+      setCopiedUrl(url);
+      toast.success('Full URL copied to clipboard!');
+
+      // Reset the copied state after 2 seconds
+      setTimeout(() => {
+        setCopiedUrl(null);
+      }, 2000);
+    } catch {
+      toast.error('Failed to copy URL');
+    }
+  };
+
   const formatFileSize = (bytes: number) => {
     const sizes = ['Bytes', 'KB', 'MB', 'GB'];
     if (bytes === 0) return '0 Bytes';
@@ -113,87 +143,141 @@ export default function PdfUploader() {
   };
 
   return (
-    <div className="container mx-auto p-6 max-w-4xl">
-      <div className="bg-white rounded-lg shadow-lg p-6">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6">PDF Manager</h1>
+    <div className="min-h-screen  py-8">
+      <div className=" w-full">
+        <div className=" rounded-xl shadow-sm px-4 flex flex-col gap-4">
+          {/* Header */}
+          <div>
+            <h1 className="text-2xl font-bold text-white flex items-center gap-3">
+              <File className="h-8 w-8" />
+              PDF Manager
+            </h1>
+            <p className="text-blue-100 mt-2">Upload, manage, and share your PDF documents</p>
+          </div>
 
-        {/* Upload Section */}
-        <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 mb-6 text-center">
-          <Upload className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-          <h3 className="text-lg font-medium text-gray-700 mb-2">Upload PDF Files</h3>
-          <p className="text-gray-500 mb-4">Select PDF files to upload to the server</p>
+          <div >
+            {/* Upload Section */}
+            <div className="  rounded-xl p-12 mb-8 text-center  border border-dashed bg-neutral-900">
+              <div className="max-w-md mx-auto">
+                <Upload className="mx-auto h-16 w-16  mb-4" />
+                <h3 className="text-xl font-semibold  mb-2">Upload PDF Files</h3>
+                <p className="text-muted-foreground  mb-6">Drag and drop or click to select PDF files</p>
 
-          <label className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer transition-colors">
-            <Upload className="mr-2 h-4 w-4" />
-            {uploading ? 'Uploading...' : 'Choose PDF File'}
-            <input
-              type="file"
-              accept=".pdf"
-              onChange={handleFileUpload}
-              disabled={uploading}
-              className="hidden"
-            />
-          </label>
-        </div>
-
-        {/* Files List */}
-        <div className="space-y-4">
-          <h2 className="text-xl font-semibold text-gray-800">Uploaded PDFs</h2>
-
-          {loading ? (
-            <div className="text-center py-8">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-              <p className="mt-2 text-gray-600">Loading PDFs...</p>
+                <label className="inline-flex items-center px-8 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md disabled:opacity-50">
+                  <Upload className="mr-2 h-5 w-5" />
+                  {uploading ? 'Uploading...' : 'Choose PDF File'}
+                  <input
+                    type="file"
+                    accept=".pdf"
+                    onChange={handleFileUpload}
+                    disabled={uploading}
+                    className="hidden"
+                  />
+                </label>
+              </div>
             </div>
-          ) : files.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">
-              <FileText className="mx-auto h-12 w-12 text-gray-300 mb-4" />
-              <p>No PDF files uploaded yet</p>
-            </div>
-          ) : (
-            <div className="grid gap-4">
-              {files.map((file) => (
-                <div key={file.filename} className="bg-gray-50 rounded-lg p-4 flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
-                    <FileText className="h-8 w-8 text-red-500" />
-                    <div>
-                      <h3 className="font-medium text-gray-800">{file.originalName}</h3>
-                      <p className="text-sm text-gray-600">
-                        {formatFileSize(file.size)} • Uploaded {formatDate(file.uploadedAt)}
-                      </p>
-                    </div>
-                  </div>
 
-                  <div className="flex items-center space-x-2">
-                    <a
-                      href={file.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors"
-                      title="View PDF"
-                    >
-                      <Eye className="h-4 w-4" />
-                    </a>
-                    <a
-                      href={file.url}
-                      download={file.originalName}
-                      className="p-2 text-green-600 hover:bg-green-100 rounded-lg transition-colors"
-                      title="Download PDF"
-                    >
-                      <Download className="h-4 w-4" />
-                    </a>
-                    <button
-                      onClick={() => handleDelete(file.filename)}
-                      className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition-colors"
-                      title="Delete PDF"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
-                  </div>
+            {/* Files List */}
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <h2 className="text-2xl font-semibold ">Uploaded PDFs</h2>
+                <span className="text-sm text-white border  px-3 py-1 rounded-full">
+                  {files.length} file{files.length !== 1 ? 's' : ''}
+                </span>
+              </div>
+
+              {loading ? (
+                <div className="text-center py-16">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+                  <p className="mt-4 text-gray-600 text-lg">Loading PDFs...</p>
                 </div>
-              ))}
+              ) : files.length === 0 ? (
+                <div className="text-center py-16 text-gray-500">
+                  <FileText className="mx-auto h-16 w-16 text-gray-300 mb-4" />
+                  <h3 className="text-lg font-medium text-gray-700 mb-2">No PDF files uploaded yet</h3>
+                  <p className="text-gray-500">Upload your first PDF to get started</p>
+                </div>
+              ) : (
+                <div className="grid gap-4">
+                  {files.map((file) => (
+                    <div key={file.filename} className=" border rounded-xl p-6 hover:shadow-md transition-shadow">
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-start space-x-4 flex-1">
+                          <div className="bg-red-50 p-3 rounded-lg">
+                            <FileText className="h-8 w-8 text-red-500" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h3 className="font-semibold text-white text-lg truncate pr-4">
+                              {file.originalName}
+                            </h3>
+                            <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
+                              <span className="flex items-center gap-1">
+                                <span className="w-2 h-2 bg-green-400 rounded-full"></span>
+                                {formatFileSize(file.size)}
+                              </span>
+                              <span>•</span>
+                              <span>Uploaded {formatDate(file.uploadedAt)}</span>
+                            </div>
+                            <div className='flex gap-2 mt-2  items-center  w-full '>
+                              <div className=" p-1 pl-3 border rounded-lg w-full">
+                                <div className="flex items-center gap-2">
+                                  <span className="text-xs text-gray-500 font-medium">URL:</span>
+                                  <code className="text-sm font-semibold text-blue-600 px-2 py-1 rounded  flex-1 truncate">
+                                    {getFullUrl(file.url)}
+                                  </code>
+                                </div>
+
+                              </div>
+                              <Button
+                                onClick={() => handleCopyUrl(file.url)}
+                                title="Copy Full URL"
+                                variant={'outline'}
+                                size={'icon'}
+                              >
+                                {copiedUrl === file.url ? (
+                                  <Check className="h-4 w-4 text-green-600" />
+                                ) : (
+                                  <Copy className="h-4 w-4" />
+                                )}
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-2 ml-4">
+
+                          <a
+                            href={getFullUrl(file.url)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-2 text-muted-foreground hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                            title="View PDF"
+                          >
+                            <Eye className="h-4 w-4" />
+                          </a>
+                          <a
+                            href={getFullUrl(file.url)}
+                            download={file.originalName}
+                            className="p-2 text-muted-foreground hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                            title="Download PDF"
+                          >
+                            <Download className="h-4 w-4" />
+                          </a>
+                          <button
+                            onClick={() => handleDelete(file.filename)}
+                            className="p-2 text-muted-foreground hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                            title="Delete PDF"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
-          )}
+          </div>
         </div>
       </div>
     </div>
