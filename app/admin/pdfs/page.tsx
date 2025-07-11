@@ -31,7 +31,7 @@ export default function PdfUploader() {
       } else {
         toast.error('Failed to fetch PDFs');
       }
-    } catch (error) {
+    } catch {
       toast.error('Error fetching PDFs');
     } finally {
       setLoading(false);
@@ -58,7 +58,7 @@ export default function PdfUploader() {
       });
 
       const data = await response.json();
-      
+
       if (response.ok) {
         toast.success('PDF uploaded successfully!');
         fetchPDFs(); // Refresh the list
@@ -67,7 +67,7 @@ export default function PdfUploader() {
       } else {
         toast.error(data.error || 'Failed to upload PDF');
       }
-    } catch (error) {
+    } catch {
       toast.error('Error uploading PDF');
     } finally {
       setUploading(false);
@@ -83,14 +83,14 @@ export default function PdfUploader() {
       });
 
       const data = await response.json();
-      
+
       if (response.ok) {
         toast.success('PDF deleted successfully!');
         fetchPDFs(); // Refresh the list
       } else {
         toast.error(data.error || 'Failed to delete PDF');
       }
-    } catch (error) {
+    } catch {
       toast.error('Error deleting PDF');
     }
   };
@@ -116,13 +116,13 @@ export default function PdfUploader() {
     <div className="container mx-auto p-6 max-w-4xl">
       <div className="bg-white rounded-lg shadow-lg p-6">
         <h1 className="text-2xl font-bold text-gray-800 mb-6">PDF Manager</h1>
-        
+
         {/* Upload Section */}
         <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 mb-6 text-center">
           <Upload className="mx-auto h-12 w-12 text-gray-400 mb-4" />
           <h3 className="text-lg font-medium text-gray-700 mb-2">Upload PDF Files</h3>
           <p className="text-gray-500 mb-4">Select PDF files to upload to the server</p>
-          
+
           <label className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer transition-colors">
             <Upload className="mr-2 h-4 w-4" />
             {uploading ? 'Uploading...' : 'Choose PDF File'}
@@ -139,7 +139,7 @@ export default function PdfUploader() {
         {/* Files List */}
         <div className="space-y-4">
           <h2 className="text-xl font-semibold text-gray-800">Uploaded PDFs</h2>
-          
+
           {loading ? (
             <div className="text-center py-8">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
@@ -163,7 +163,7 @@ export default function PdfUploader() {
                       </p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center space-x-2">
                     <a
                       href={file.url}
