@@ -18,7 +18,7 @@ export default function SectionHeader({
     position = "start",
     lineColor = "from-yellow-400 to-orange-400",
     className = "",
-    lineClassName = ""
+    lineClassName = "w-96"
 }: SectionHeaderProps) {
     const positionClasses = {
         start: "items-start",
@@ -50,7 +50,7 @@ export default function SectionHeader({
                 </h1>
             </div>
 
-            <div className={cn("w-96 h-1 bg-gradient-to-r rounded-full mb-4", lineColor, linePositionClasses[position], lineClassName)}></div>
+            <div className={cn(" h-1 bg-gradient-to-r rounded-full mb-4", lineColor, linePositionClasses[position], lineClassName)}></div>
         </header>
     );
 }

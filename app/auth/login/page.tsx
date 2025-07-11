@@ -23,6 +23,8 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { toast } from "sonner";
+import Link from "next/link";
+import { Home } from "lucide-react";
 
 const loginSchema = z.object({
     email: z.string().email({ message: "Invalid email address" }),
@@ -74,12 +76,13 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="flex justify-center items-center h-screen  px-4">
+        <div className="flex flex-col justify-center items-center h-screen relative  px-4">
             <Card className="w-full max-w-md shadow-lg">
                 <CardHeader>
                     <CardTitle className="text-center text-2xl">Login to admin panel</CardTitle>
                 </CardHeader>
                 <CardContent>
+
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                             <FormField
@@ -125,7 +128,7 @@ export default function LoginPage() {
                             <Button
                                 type="submit"
                                 className="w-full h-11  font-medium "
-                                disabled={!form.formState.isValid || loading}
+                                disabled={loading}
                             >
                                 {loading ? (
                                     <div className="flex items-center gap-2">
@@ -140,6 +143,10 @@ export default function LoginPage() {
                     </Form>
                 </CardContent>
             </Card>
+            <Link className="absolute top-7 left-16 font-semibold text-2xl cursor-pointer" href={'/'}>
+                <Home />
+            </Link>
+
         </div>
     );
 }

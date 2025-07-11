@@ -88,6 +88,7 @@ export default function MockTest() {
                     title="Mock Tests"
                     MainIcon={FileText}
                     AccentIcon={Timer}
+                    lineClassName="w-68"
                 />
                 {/* <SectionHeader
                     title="Mock Tests"
@@ -133,8 +134,8 @@ export default function MockTest() {
                         ))}
                     </div>
                 ) : (
-                    <div className="w-full flex justify-center">
-                        <Card className="border border-gray-200 max-w-md w-full">
+                    <div className="w-full flex  ">
+                        <Card className="border border-gray-200 max-w-3xl w-full">
                             <CardHeader className="pb-2 pt-6 px-6 text-center">
                                 <div className="flex justify-center mb-4">
                                     <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">

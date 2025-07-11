@@ -12,6 +12,8 @@ import {
 import axios from "axios";
 import { toast } from "sonner";
 import SectionHeader from "@/components/common/SectionHeader";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 // TypeScript interfaces for the data structure
 interface Pdf {
@@ -81,7 +83,7 @@ export default function NebNotes() {
         setIsDialogOpen(true);
     };
 
- 
+
 
     if (loading) {
         return (
@@ -94,8 +96,39 @@ export default function NebNotes() {
 
     if (!nebData || Object.keys(nebData).length === 0) {
         return (
-            <div className="flex justify-center items-center mt-24">
-                <p className="text-lg text-slate-500">No data available</p>
+            <div id="notes" className="flex lg:flex-row flex-col justify-center items-center mt-16 h-max border-t border-slate-200 font-sans pt-12 w-screen bg-gradient-to-br from-slate-50 to-blue-50/30">
+                <div className="flex lg:w-[85%] w-[85%] gap-8 flex-col">
+                    <SectionHeader />
+
+                    <div className="w-full flex  ">
+                        <Card className="border border-gray-200 max-w-3xl w-full">
+                            <CardHeader className="pb-2 pt-6 px-6 text-center">
+                                <div className="flex justify-center mb-4">
+                                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
+                                        <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <GraduationCap />
+                                        </svg>
+
+                                    </div>
+                                </div>
+                                <CardTitle className="text-lg font-semibold text-gray-900 leading-tight">No NEB Notes Available</CardTitle>
+                                <CardDescription className="text-gray-600 text-sm leading-relaxed">
+                                    NEB Notes are being prepared and will be available soon. Please check back later.
+                                </CardDescription>
+                            </CardHeader>
+                            <CardContent className="pt-0 px-6 pb-6">
+                                <div className="flex justify-center">
+                                    <Badge variant="outline" className="text-xs">
+                                        Coming Soon
+                                    </Badge>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </div>
+
+
+
+                </div>
             </div>
         );
     }
