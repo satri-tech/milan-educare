@@ -31,7 +31,7 @@ export async function GET(
     });
 
     // return NextResponse.json({ message: filePath });
-  } catch (err) {
+  } catch  {
     return new Response("File not found", { status: 404 });
   }
 }
