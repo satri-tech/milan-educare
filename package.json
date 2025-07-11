@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "seed:admin": "tsx scripts/seed-admin.ts",
-    "seed:mockpassword": "tsx scripts/seed-mockpassword.ts"
+    "seed:mockpassword": "tsx scripts/seedmockpassword.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
