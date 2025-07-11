@@ -96,18 +96,18 @@ export default function PdfUploader() {
       toast.error('Error deleting PDF');
     }
   };
-
   const getFullUrl = (url: string) => {
     // If the URL is already absolute, return it as is
     if (url.startsWith('http://') || url.startsWith('https://')) {
       return url;
     }
 
-    // If it's a relative URL, construct the full URL
+    // Ensure the filename is properly appended to the /api/admin/files route
     const baseUrl = window.location.origin;
-    const fullUrl = url.startsWith('/') ? `${baseUrl}${url}` : `${baseUrl}/pdfs/${url}`;
-    return fullUrl;
+    const filename = url.startsWith('/') ? url.split('/').pop() : url;
+    return `${baseUrl}/api/admin/files/${filename}`;
   };
+
 
   const handleCopyUrl = async (url: string) => {
     try {
@@ -147,7 +147,7 @@ export default function PdfUploader() {
       <div className=" w-full">
         <div className=" rounded-xl shadow-sm px-4 flex flex-col gap-4">
           {/* Header */}
-      
+
           <div>
             <h1 className="text-3xl font-bold mb-2">PDF Manager</h1>
             <p className="text-muted-foreground">
