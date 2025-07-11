@@ -15,7 +15,7 @@ export default function Home() {
     SliderImage1, SliderImage2, SliderImage3
   ];
   return (
-    <div className=" flex flex-col">
+    <div className=" flex flex-col overflow-y-hidden">
       <NavBar />
       {/* <HeroSection /> */}
       <WelcomeText />
