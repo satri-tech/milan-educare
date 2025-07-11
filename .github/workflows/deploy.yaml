@@ -10,51 +10,57 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    - name: 🧾 Checkout code
       uses: actions/checkout@v3
 
-    - name: Setup Node.js
+    - name: 🧰 Setup Node.js
       uses: actions/setup-node@v3
       with:
         node-version: '18'
         cache: 'npm'
 
-    - name: Install dependencies
+    - name: 📦 Install dependencies
       run: npm ci
 
-    - name: Build application
+    - name: ⚙️ Build application
       run: npm run build
 
-    - name: Deploy to VPS via SSH
+    - name: 🚀 Deploy to VPS via SSH
       uses: appleboy/ssh-action@v0.1.7
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.SSH_KEY }}
         script: |
+          echo "🔁 Switching to project directory..."
           cd /home/satri/web/milan-educare
 
-          echo "Cleaning local changes and pulling latest code..."
+          echo "♻️ Resetting local changes..."
           git reset --hard HEAD
           git clean -fd
+
+          echo "📥 Pulling latest code..."
           git pull origin master
 
-          echo "Installing dependencies..."
+          echo "📦 Installing dependencies..."
           npm ci
 
-          echo "Building app..."
+          echo "⚙️ Building Next.js app..."
           npm run build
 
-          echo "Generating Prisma client..."
+          echo "🧬 Generating Prisma Client..."
           npx prisma generate
 
-          echo "Syncing Prisma schema..."
-          # If you're not using migrations, use db push instead
-          npx prisma migrate deploy
+          echo "🧠 Trying to apply Prisma migrations..."
+          if npx prisma migrate deploy; then
+            echo "✅ Migrations applied successfully."
+          else
+            echo "⚠️ migrate deploy failed — falling back to db push."
+            npx prisma db push
+          fi
 
-
-          echo "Restarting PM2..."
+          echo "🔁 Restarting PM2..."
           pm2 restart milan-educare --update-env
 
-          echo "PM2 status:"
+          echo "📊 PM2 Status:"
           pm2 status
