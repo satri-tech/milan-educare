@@ -15,7 +15,7 @@ async function seedAdmin() {
       },
     });
   } catch (error) {
-    console.error("❌ Error seeding mockPassword:", error);
+    console.error("❌ Error seeding mockPassword", error);
     process.exit(1);
   } finally {
     await prisma.$disconnect();
