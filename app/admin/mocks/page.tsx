@@ -263,16 +263,18 @@ export default function AdminMockTest() {
     }
 
     return (
-        <div className="min-h-screen p-4">
-            <div className="max-w-full mx-auto">
-                {/* Header */}
-                <div className="mb-5">
-                    <h1 className="text-3xl font-bold mb-3">Mock Test Management</h1>
-                    <p>Create and manage mock tests for your platform</p>
+        <div className="min-h-screen  py-8">
+            <div className=" w-full">
+                <div className=" rounded-xl shadow-sm px-4 flex flex-col  gap-1">
+                    {/* Header */}
+                    <h1 className="text-3xl font-bold ">Mock Test Management</h1>
+                    <p className="text-muted-foreground">
+                        Create and manage mock tests for your platform
+                    </p>
                 </div>
 
                 {/* Stats Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 mt-6  px-4 ">
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1">
                             <CardTitle className="text-sm font-medium">Total Tests</CardTitle>
@@ -362,7 +364,7 @@ export default function AdminMockTest() {
                 </div>
 
                 {/* Add New Test Button */}
-                <div className="flex justify-between items-center mb-4">
+                <div className="flex justify-between items-center mb-4  px-4 ">
                     <h2 className="text-xl font-semibold">Mock Tests</h2>
                     <Dialog
                         open={isAddDialogOpen}
@@ -478,7 +480,7 @@ export default function AdminMockTest() {
                 </div>
 
                 {/* Tests Table */}
-                <Card>
+                <Card className=" mx-4 ">
                     <CardHeader className="pb-6">
                         <CardTitle>All Mock Tests</CardTitle>
                         <CardDescription>Manage your mock tests, edit details, or remove tests</CardDescription>

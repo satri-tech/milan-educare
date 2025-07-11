@@ -1,14 +1,13 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { FileText, GraduationCap, Eye, Loader2, ChevronDown, ChevronRight, BookOpen, X } from "lucide-react"
+import { FileText, GraduationCap, Eye, Loader2, ChevronDown, ChevronRight, BookOpen } from "lucide-react"
 import { Button } from "@/components/ui/button";
 import {
     Dialog,
     DialogContent,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
 } from "@/components/ui/dialog"
 import axios from "axios";
 import { toast } from "sonner";
@@ -82,10 +81,7 @@ export default function NebNotes() {
         setIsDialogOpen(true);
     };
 
-    const handleDialogClose = () => {
-        setIsDialogOpen(false);
-        setSelectedPdf(null);
-    };
+ 
 
     if (loading) {
         return (
@@ -241,14 +237,14 @@ export default function NebNotes() {
 
             {/* PDF Dialog */}
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <DialogContent className="max-w-6xl w-[95vw] h-[90vh] p-0">
-                    <DialogHeader className="p-6 pb-4 border-b border-slate-200">
+                <DialogContent className="sm:max-w-7xl h-5/6 flex flex-col">
+                    <DialogHeader className="  h-14 border-b border-slate-200">
                         <DialogTitle className="text-lg font-semibold text-slate-800 flex items-center gap-2">
                             <FileText className="h-5 w-5 text-teal-600" />
                             {selectedPdf?.name}
                         </DialogTitle>
                     </DialogHeader>
-                    <div className="flex-1 p-6 pt-0">
+                    <div className="  pt-0 h-full">
                         {selectedPdf && (
                             <iframe
                                 src={selectedPdf.url}

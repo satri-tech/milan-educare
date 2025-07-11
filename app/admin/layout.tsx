@@ -19,7 +19,6 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Outfit } from "next/font/google";
 import { ThemeProvider } from "next-themes";
-import { FaFilePdf } from "react-icons/fa";
 
 const outfit = Outfit({
     variable: "--font-outfit",
