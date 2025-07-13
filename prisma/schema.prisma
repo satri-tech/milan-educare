@@ -29,6 +29,8 @@ model MockTest {
 model Settings {
   id               String   @id @default("global") // fixed ID
   mockTestPassword String
+  noticeImageUrl   String?
+  isNoticeActive   Boolean  @default(false)
   updatedAt        DateTime @updatedAt
 }
 
