@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   title: "Milan Educare",
   description: "Entrance Preparation Classes",
   icons: {
-    icon: 'http://localhost:3000/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.746fbfb0.jpg&w=256&q=75'
+    icon: 'https://milan-educare.satritech.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.0eed7250.jpg&w=256&q=75'
   }
 };
 
