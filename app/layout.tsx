@@ -3,16 +3,16 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import SessionProviderWrapper from "@/lib/session-provider";
 import { Toaster } from "@/components/ui/sonner"
+import Image from '@/public/favicon.ico'
 const poppins = Poppins({
   weight: ['100', '200', '300', '400', '500', '600', '700', '800'],
   subsets: ['latin'],
 });
-
 export const metadata: Metadata = {
   title: "Milan Educare",
   description: "Entrance Preparation Classes",
   icons: {
-    icon: 'https://milan-educare.satritech.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.0eed7250.jpg&w=256&q=75'
+    icon: Image.src
   }
 };
 
