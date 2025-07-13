@@ -14,6 +14,7 @@ import ContactSection from "@/components/features/ContactUs";
 import Footer from "@/components/layouts/Footer";
 import NoticeDialog from '@/components/features/notice/NoticeDialog';
 import axios from 'axios';
+import Testimonials from '@/components/features/testimonials/Testimonials';
 
 // TypeScript interface for notice data
 interface NoticeData {
@@ -80,6 +81,7 @@ export default function Home() {
       <AboutUs />
       <MockTest />
       <NebNotes />
+      <Testimonials />
       <ContactSection />
       <Footer />
     </div>
