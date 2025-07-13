@@ -14,7 +14,7 @@ import {
     SidebarProvider,
     SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { BookIcon, Building, File, Megaphone, PenTool, Settings, User } from "lucide-react";
+import { BookIcon, Building, File, Megaphone, PenTool, Settings, User, MessageSquare } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Outfit } from "next/font/google";
@@ -72,6 +72,11 @@ export default function AdminLayout({
                 title: "Pdfs",
                 url: "/admin/pdfs",
                 icon: File,
+            },
+            {
+                title: "Contact Us",
+                url: "/admin/contact",
+                icon: MessageSquare,
             },
             {
                 title: "Settings",
