@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
     if (existsSync(oldFilepath)) {
       try {
         await unlink(oldFilepath);
-        console.log("Deleted old notice.jpg");
+        console.log("Deleted old notice .jpg");
       } catch (deleteError) {
         console.error("Error deleting old image:", deleteError);
         // Continue with upload even if deletion fails
