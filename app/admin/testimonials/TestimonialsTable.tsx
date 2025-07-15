@@ -1,22 +1,19 @@
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { toast } from "sonner";
 import axios from "axios";
-import { Edit, Star, Trash2, User } from "lucide-react";
+import { Star, Trash2, User } from "lucide-react";
 import Image from "next/image";
-interface ITestimonial {
-    id: string;
-    name: string;
-    role: string;
-    image: string;
-    content: string;
-    rating: number
-}
+import { ITestimonial } from "./types";
+import { Dispatch, SetStateAction } from "react";
+
 interface ITestimonialsProps {
     testimonials: ITestimonial[]
+    setTestimonials: Dispatch<SetStateAction<ITestimonial[]>>
 }
 
-export default function TestimonalsTable({ testimonials }: ITestimonialsProps) {
+export default function TestimonalsTable({ testimonials, setTestimonials }: ITestimonialsProps) {
     console.log(testimonials)
 
 
@@ -36,11 +33,14 @@ export default function TestimonalsTable({ testimonials }: ITestimonialsProps) {
         try {
             const response = await axios.delete(`/api/admin/testimonials/${id}`);
             console.log(response)
+            if (response.status === 200) {
+                setTestimonials((prev) => prev.filter((testimonial) => testimonial.id !== id))
+                toast.success("Testimonial deleted successfully")
+            }
         } catch (error) {
-            alert(error)
-
+            console.error("Error deleting testimonial:", error)
+            toast.error("Failed to delete testimonial. Please try again.")
         }
-
     }
     return <div className="rounded-md border">
         <Table>
@@ -86,7 +86,7 @@ export default function TestimonalsTable({ testimonials }: ITestimonialsProps) {
                             <TableCell>{testimonial.role}</TableCell>
                             <TableCell>
                                 <div className="max-w-xs">
-                                    {truncateContent(testimonial.content)}
+                                    {truncateContent(testimonial.content, 20)}
                                 </div>
                             </TableCell>
                             <TableCell>
@@ -100,16 +100,15 @@ export default function TestimonalsTable({ testimonials }: ITestimonialsProps) {
 
                             <TableCell className="text-right">
                                 <div className="flex items-center justify-end gap-2">
-                                    <Button
+                                    {/* <Button
                                         variant="outline"
                                         size="sm"
-                                    // onClick={() => openEditDialog(testimonial)}
                                     >
                                         <Edit className="h-4 w-4" />
-                                    </Button>
+                                    </Button> */}
                                     <AlertDialog>
                                         <AlertDialogTrigger asChild>
-                                            <Button variant="destructive" size="sm">
+                                            <Button size="icon" className="bg-red-700 hover:bg-red-800">
                                                 <Trash2 className="h-4 w-4" />
                                             </Button>
                                         </AlertDialogTrigger>

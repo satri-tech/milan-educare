@@ -17,24 +17,28 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { ImageIcon, Upload, X } from "lucide-react"
-import { useState } from "react"
+import { Dispatch, SetStateAction, useState } from "react"
 import Image from "next/image"
 import { Label } from "@/components/ui/label"
 import { toast } from "sonner"
 import axios from "axios"
+import { ITestimonial } from "./types"
 
 const formSchema = z.object({
     fullname: z.string().min(5).max(50),
     role: z.string().min(4).max(15),
-    content: z.string().min(4).max(50),
+    content: z.string().min(4).max(300),
     ratings: z
         .string({
             required_error: "Please select an email to display.",
         }),
     userImage: z.any()
 })
-
-export default function AddTestimonials() {
+interface IAddTestimonialsProps {
+    setTestimonials: Dispatch<SetStateAction<ITestimonial[]>>
+    setIsOpen: Dispatch<SetStateAction<boolean>>
+}
+export default function AddTestimonials({ setTestimonials, setIsOpen }: IAddTestimonialsProps) {
     const [selectedImage, setSelectedImage] = useState<File | null>(null)
     const [imagePreview, setImagePreview] = useState<string | null>(null)
     const [isLoading, setIsLoading] = useState(false)
@@ -126,8 +130,13 @@ export default function AddTestimonials() {
                 image: imageUrl
             }
 
-            await axios.post('/api/admin/testimonials', testimonialData)
-            toast.success("Testimonial created successfully!")
+            const response = await axios.post('/api/admin/testimonials', testimonialData)
+            if (response.status === 201) {
+                const data = response.data
+                setTestimonials((prev) => [data, ...prev])
+                setIsOpen(false)
+                toast.success("Testimonial created successfully!")
+            }
 
             // Reset form
             form.reset()
@@ -152,9 +161,9 @@ export default function AddTestimonials() {
                 name="fullname"
                 render={({ field }) => (
                     <FormItem>
-                        <FormLabel>Username</FormLabel>
+                        <FormLabel>Full name</FormLabel>
                         <FormControl>
-                            <Input placeholder="shadcn" {...field} />
+                            <Input placeholder="Enter your fullname" {...field} />
                         </FormControl>
                         <FormMessage />
                     </FormItem>
@@ -167,7 +176,7 @@ export default function AddTestimonials() {
                     <FormItem>
                         <FormLabel>Role</FormLabel>
                         <FormControl>
-                            <Input placeholder="shadcn" {...field} />
+                            <Input placeholder="Eg: Student, Teacher" {...field} />
                         </FormControl>
                         <FormMessage />
                     </FormItem>
@@ -181,7 +190,7 @@ export default function AddTestimonials() {
                         <FormLabel>Content</FormLabel>
                         <FormControl>
                             <Textarea
-                                placeholder="Tell us a little bit about yourself"
+                                placeholder="Enter their testimonial...."
                                 className="resize-none"
                                 {...field}
                             />
@@ -217,7 +226,7 @@ export default function AddTestimonials() {
             <FormField
                 control={form.control}
                 name="userImage"
-                render={({ field }) => (
+                render={() => (
                     <FormItem>
                         <FormLabel>Profile Image</FormLabel>
                         <FormControl>

@@ -8,9 +8,11 @@ import AddTestimonials from "./AddTestimonials";
 import TestimonalsTable from "./TestimonialsTable";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { ITestimonial } from "./types";
 
 export default function TestimonialsPage() {
-    const [testimonials, setTestimonials] = useState([])
+    const [isOpen, setIsOpen] = useState(false)
+    const [testimonials, setTestimonials] = useState<ITestimonial[]>([])
     const handleFetchTestimonials = async () => {
         try {
             const response = await axios.get('/api/admin/testimonials')
@@ -37,11 +39,10 @@ export default function TestimonialsPage() {
             <CardContent>
                 <div className="mb-4 flex items-center justify-between">
                     <Badge variant="outline" className="text-sm">
-                        Total Testimonials: 20
-                        {/* Total Testimonials: {testimonials.length} */}
+                        Total Testimonials: {testimonials.length}
                     </Badge>
                     <div className="flex items-center gap-2">
-                        <Dialog>
+                        <Dialog open={isOpen} onOpenChange={setIsOpen}>
                             <DialogTrigger asChild>
                                 <Button size="sm">
                                     <Plus className="h-4 w-4 mr-2" />
@@ -55,13 +56,12 @@ export default function TestimonialsPage() {
                                         Create a new testimonial entry
                                     </DialogDescription>
                                 </DialogHeader>
-                                <AddTestimonials />
-                                {/* <TestimonialForm onSubmit={handleAddTestimonial} /> */}
+                                <AddTestimonials setTestimonials={setTestimonials} setIsOpen={setIsOpen} />
                             </DialogContent>
                         </Dialog>
                     </div>
                 </div>
-                <TestimonalsTable testimonials={testimonials} />
+                <TestimonalsTable testimonials={testimonials} setTestimonials={setTestimonials} />
             </CardContent>
         </Card>
     </div>
