@@ -38,7 +38,7 @@ export default function Footer() {
             <div className="w-11/12 flex flex-col  gap-1 font-Poppins sm:mt-14 mt-10 z-49  ">
                 <div className=" h-28 w-full">
                     <div className="text-3xl font-semibold font-Poppins ">
-                        Milan Educare
+                        Milaan EduCare
                     </div>
                     <div className="text-secondary-text">
                         Empowering Students, Enriching Futures
@@ -94,7 +94,7 @@ export default function Footer() {
                 </div> */}
             </div>
             <div className="w-11/12 flex justify-end text-secondary-text text-sm pt-4   border-t-[0.5px] border-secondary-text">
-                © 2025 Milan Educare. All rights reserved
+                © 2025 Milaan EduCare. All rights reserved
             </div>
         </div>
     );

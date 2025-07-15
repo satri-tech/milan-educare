@@ -2,7 +2,7 @@ name: Deploy to VPS
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   workflow_dispatch:
 
 jobs:
@@ -10,57 +10,57 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: 🧾 Checkout code
-      uses: actions/checkout@v3
+      - name: 🧾 Checkout code
+        uses: actions/checkout@v3
 
-    - name: 🧰 Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
-        cache: 'npm'
+      - name: 🧰 Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+          cache: "npm"
 
-    - name: 📦 Install dependencies
-      run: npm ci
+      - name: 📦 Install dependencies
+        run: npm ci
 
-    - name: ⚙️ Build application
-      run: npm run build
+      - name: ⚙️ Build application
+        run: npm run build
 
-    - name: 🚀 Deploy to VPS via SSH
-      uses: appleboy/ssh-action@v0.1.7
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.SSH_KEY }}
-        script: |
-          echo "🔁 Switching to project directory..."
-          cd /home/satri/web/milan-educare
+      - name: 🚀 Deploy to VPS via SSH
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            echo "🔁 Switching to project directory..."
+            cd /home/satri/web/milan-educare
 
-          echo "♻️ Resetting local changes..."
-          git reset --hard HEAD
-          git clean -fd
+            echo "♻️ Resetting local changes..."
+            git reset --hard HEAD
+            git clean -fd
 
-          echo "📥 Pulling latest code..."
-          git pull origin master
+            echo "📥 Pulling latest code..."
+            git pull origin master
 
-          echo "📦 Installing dependencies..."
-          npm ci
+            echo "📦 Installing dependencies..."
+            npm ci
 
-          echo "⚙️ Building Next.js app..."
-          npm run build
+            echo "⚙️ Building Next.js app..."
+            npm run build
 
-          echo "🧬 Generating Prisma Client..."
-          npx prisma generate
+            echo "🧠 Trying to apply Prisma migrations..."
+            if npx prisma migrate deploy; then
+              echo "✅ Migrations applied successfully."
+            else
+              echo "⚠️ migrate deploy failed — falling back to db push."
+              npx prisma db push
+            fi
 
-          echo "🧠 Trying to apply Prisma migrations..."
-          if npx prisma migrate deploy; then
-            echo "✅ Migrations applied successfully."
-          else
-            echo "⚠️ migrate deploy failed — falling back to db push."
-            npx prisma db push
-          fi
+            echo "🧬 Generating Prisma Client..."
+            npx prisma generate
 
-          echo "🔁 Restarting PM2..."
-          pm2 restart milan-educare --update-env
+            echo "🔁 Restarting PM2..."
+            pm2 restart milan-educare --update-env
 
-          echo "📊 PM2 Status:"
-          pm2 status
+            echo "📊 PM2 Status:"
+            pm2 status

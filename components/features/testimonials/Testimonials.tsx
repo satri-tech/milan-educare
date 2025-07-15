@@ -10,7 +10,7 @@ export default function Testimonials() {
             role: "Engineering Student",
             image: "/placeholder.svg?height=40&width=40",
             content:
-                "Milan Educare helped me grasp complex engineering concepts with ease. The practical projects and supportive instructors boosted my confidence and skills throughout my studies.",
+                "Milaan EduCare helped me grasp complex engineering concepts with ease. The practical projects and supportive instructors boosted my confidence and skills throughout my studies.",
             rating: 5,
         },
         {
@@ -19,7 +19,7 @@ export default function Testimonials() {
             role: "MBBS Student",
             image: "/placeholder.svg?height=40&width=40",
             content:
-                "The medical courses at Milan Educare are detailed and easy to follow. The case studies and interactive lessons made studying medicine less daunting and much more interesting.",
+                "The medical courses at Milaan EduCare are detailed and easy to follow. The case studies and interactive lessons made studying medicine less daunting and much more interesting.",
             rating: 4,
         },
         {
@@ -28,7 +28,7 @@ export default function Testimonials() {
             role: "Computer Science Student",
             image: "/placeholder.svg?height=40&width=40",
             content:
-                "As a beginner in programming, Milan Educare’s curriculum was perfectly structured. The mentorship and hands-on assignments helped me build a solid foundation in computer science.",
+                "As a beginner in programming, Milaan EduCare’s curriculum was perfectly structured. The mentorship and hands-on assignments helped me build a solid foundation in computer science.",
             rating: 5,
         },
         {
@@ -37,7 +37,7 @@ export default function Testimonials() {
             role: "Teacher",
             image: "/placeholder.svg?height=40&width=40",
             content:
-                "Teaching at Milan Educare has been a rewarding experience. The platform’s resources enable me to deliver lessons effectively and engage students with real-world examples.",
+                "Teaching at Milaan EduCare has been a rewarding experience. The platform’s resources enable me to deliver lessons effectively and engage students with real-world examples.",
             rating: 4,
         },
         {
@@ -46,7 +46,7 @@ export default function Testimonials() {
             role: "Design Student",
             image: "/placeholder.svg?height=40&width=40",
             content:
-                "The UX and design courses at Milan Educare are comprehensive and inspiring. The projects helped me develop a strong portfolio which I’m confident will open doors in my design career.",
+                "The UX and design courses at Milaan EduCare are comprehensive and inspiring. The projects helped me develop a strong portfolio which I’m confident will open doors in my design career.",
             rating: 3,
         },
         {
@@ -55,7 +55,7 @@ export default function Testimonials() {
             role: "Science Student",
             image: "/placeholder.svg?height=40&width=40",
             content:
-                "Milan Educare’s science program provided clear explanations and engaging labs that deepened my understanding. The instructors are knowledgeable and approachable.",
+                "Milaan EduCare’s science program provided clear explanations and engaging labs that deepened my understanding. The instructors are knowledgeable and approachable.",
             rating: 5,
         },
     ]
@@ -68,7 +68,7 @@ export default function Testimonials() {
                     <div className="space-y-2">
                         <h2 className="text-3xl font-bold tracking-tight sm:text-5xl">TESTIMONIALS</h2>
                         <p className="text-muted-foreground">
-                            Real stories from students who turned their dreams into reality with Milan Educare.
+                            Real stories from students who turned their dreams into reality with Milaan EduCare.
                         </p>
                     </div>
                 </div>

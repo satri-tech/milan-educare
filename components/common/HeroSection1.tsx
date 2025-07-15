@@ -38,10 +38,10 @@ export default function HeroSection() {
                             </div>
                             <h1 className="text-3xl font-bold tracking-wide sm:text-5xl xl:text-6xl/none">
                                 Welcome to {" "}
-                                <span className="text-primary">Milan EduCare</span>
+                                <span className="text-primary">Milaan EduCare</span>
                             </h1>
                             <p className="max-w-[600px] text-muted-foreground md:text-xl text-justify">
-                                {`  For nearly a decade, Milan EduCare has been at the forefront of educational innovation,
+                                {`  Milaan EduCare has been at the forefront of educational innovation,
                                 providing exceptional support services that transform learning experiences and unlock every student's potential.`}
                             </p>
                         </div>

@@ -9,7 +9,7 @@ const poppins = Poppins({
   subsets: ['latin'],
 });
 export const metadata: Metadata = {
-  title: "Milan Educare",
+  title: "Milaan EduCare",
   description: "Entrance Preparation Classes",
   icons: {
     icon: Image.src

@@ -8,7 +8,7 @@ export default function AboutUs() {
                 <div className="relative flex justify-center items-center pt-24 pb-16">
                     <div className="w-[92%] max-w-7xl text-center">
                         <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
-                            About Milan EduCare
+                            About Milaan EduCare
                         </div>
                         <h1 className="text-4xl lg:text-6xl font-bold text-foreground mb-6 leading-tight">
                             Empowering Education,
@@ -17,7 +17,7 @@ export default function AboutUs() {
                             </span>
                         </h1>
                         <p className="text-base text-muted-foreground leading-relaxed max-w-4xl mx-auto">
-                            {` For nearly a decade, Milan EduCare has been at the forefront of educational innovation,
+                            {` For nearly a decade, Milaan EduCare has been at the forefront of educational innovation,
                             providing exceptional support services that transform learning experiences and unlock every student's potential.`}
                         </p>
                     </div>

@@ -75,11 +75,11 @@ export const contactInfo = {
       icon: Users,
       title: "FOLLOW US ONLINE",
       description:
-        "Get updates on events, scholarships, and academic life at Milan Educare.",
+        "Get updates on events, scholarships, and academic life at Milan EduCare.",
       socialLinks: [
         {
           name: "Facebook",
-          href: "https://www.facebook.com/milaneducare",
+          href: "https://www.facebook.com/profile.php?id=61563373978872",
           icon: <FaFacebookF className="h-5 w-5" />,
           color: "bg-blue-600",
         },

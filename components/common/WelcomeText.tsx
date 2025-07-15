@@ -29,7 +29,7 @@ export default function WelcomeText() {
                             Welcome to{' '}
                             <span className="relative">
                                 <span className="bg-gradient-to-r from-primary to-primary/90 bg-clip-text text-transparent">
-                                    Milan <br /> EduCare
+                                    Milaan <br /> EduCare
                                 </span>
                                 <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
                             </span>

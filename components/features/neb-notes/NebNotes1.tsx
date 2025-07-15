@@ -233,21 +233,22 @@ export default function NebNotes() {
                                                                 {topic.pdfs.map((pdf, pdfIndex) => (
                                                                     <div
                                                                         key={pdfIndex}
-                                                                        className="flex items-center justify-between p-3 pl-32 hover:bg-white/70 transition-colors group"
+                                                                        className="flex items-center justify-between p-3 pl-32 hover:bg-white/70 transition-colors group cursor-pointer"
+                                                                        onClick={() => handlePdfView(pdf)}
+
                                                                     >
                                                                         <div className="flex items-center gap-3">
                                                                             <div className="w-6 h-6 bg-teal-50 rounded-md flex items-center justify-center">
                                                                                 <FileText className="h-3 w-3 text-teal-600" />
                                                                             </div>
-                                                                            <span className="text-sm font-medium text-slate-700 group-hover:text-teal-700 transition-colors">
+                                                                            <span className="text-sm font-medium text-teal-700 group-hover:text-teal-700 transition-colors">
                                                                                 {pdf.name}
                                                                             </span>
                                                                         </div>
                                                                         <Button
                                                                             size="sm"
-                                                                            variant="ghost"
-                                                                            className="opacity-0 group-hover:opacity-100 transition-all duration-200 h-8 px-3 text-teal-600 hover:text-teal-700 hover:bg-teal-50"
-                                                                            onClick={() => handlePdfView(pdf)}
+                                                                            variant={'outline'}
+                                                                            className=" transition-all duration-200 h-8 px-3 bg-green-800 text-white hover:text-white hover:bg-green-900"
                                                                         >
                                                                             <Eye className="h-3 w-3" />
                                                                             <span className="text-xs font-medium ml-1">View</span>

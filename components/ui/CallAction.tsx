@@ -5,7 +5,7 @@ export default function CallAction() {
                 Ready to Begin Your Educational Journey?
             </h2>
             <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-                Join thousands of students who have transformed their learning experience with Milan EduCare.
+                Join thousands of students who have transformed their learning experience with Milaan EduCare.
                 Let us help you unlock your potential and achieve your educational goals.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
