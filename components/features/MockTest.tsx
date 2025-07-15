@@ -64,8 +64,13 @@ export default function MockTest() {
 
             if (response.data.success) {
                 if (selectedTest?.link) {
-                    window.open(selectedTest.link, '_blank')
+                    let url = selectedTest.link
+                    if (!/^https?:\/\//i.test(url)) {
+                        url = 'https://' + url
+                    }
+                    window.open(url, '_blank')
                 }
+
                 setIsDialogOpen(false)
                 setPassword('')
             } else {
