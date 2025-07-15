@@ -17,7 +17,7 @@ export default function AboutUs() {
                             </span>
                         </h1>
                         <p className="text-base text-muted-foreground leading-relaxed max-w-4xl mx-auto">
-                            {` For nearly a decade, Milaan EduCare has been at the forefront of educational innovation,
+                            {`Milaan EduCare has been at the forefront of educational innovation,
                             providing exceptional support services that transform learning experiences and unlock every student's potential.`}
                         </p>
                     </div>
