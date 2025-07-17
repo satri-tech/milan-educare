@@ -6,7 +6,7 @@ import Image from "next/image"
 import { useEffect, useState } from "react"
 
 export default function Testimonials() {
- 
+
     const [testimonials, setTestimonials] = useState<ITestimonial[]>([])
     const handleFetchTestimonials = async () => {
         try {
@@ -62,14 +62,14 @@ export default function Testimonials() {
                                     {/* Author Info */}
                                     <div className="flex items-center gap-3 mt-auto">
                                         <Image
-                                            height="100"
-                                            width="60"
-                                            src={testimonial.image}
+                                            height={48}
+                                            width={48}
+                                            src={`/api/admin/testimonials/image${testimonial.image}`}
                                             alt={testimonial.name}
                                             className="h-12 w-12 object-cover rounded-full border"
                                             onError={(e) => {
-                                                const target = e.target as HTMLImageElement;
-                                                target.src = "/placeholder.svg?height=40&width=40";
+                                                // Fallback to a default image if the API fails
+                                                e.currentTarget.src = '/images/default-avatar.png';
                                             }}
                                         />
                                         <div>
