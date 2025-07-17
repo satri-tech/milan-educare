@@ -1,64 +1,26 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { ITestimonial } from "@/app/admin/testimonials/types"
 import { Card, CardContent } from "@/components/ui/card"
+import axios from "axios"
 import { Star } from "lucide-react"
+import Image from "next/image"
+import { useEffect, useState } from "react"
 
 export default function Testimonials() {
-    const testimonials = [
-        {
-            id: 1,
-            name: "Sita Shrestha",
-            role: "Engineering Student",
-            image: "/placeholder.svg?height=40&width=40",
-            content:
-                "Milaan EduCare helped me grasp complex engineering concepts with ease. The practical projects and supportive instructors boosted my confidence and skills throughout my studies.",
-            rating: 5,
-        },
-        {
-            id: 2,
-            name: "Ram Bahadur",
-            role: "MBBS Student",
-            image: "/placeholder.svg?height=40&width=40",
-            content:
-                "The medical courses at Milaan EduCare are detailed and easy to follow. The case studies and interactive lessons made studying medicine less daunting and much more interesting.",
-            rating: 4,
-        },
-        {
-            id: 3,
-            name: "Priya Karki",
-            role: "Computer Science Student",
-            image: "/placeholder.svg?height=40&width=40",
-            content:
-                "As a beginner in programming, Milaan EduCare’s curriculum was perfectly structured. The mentorship and hands-on assignments helped me build a solid foundation in computer science.",
-            rating: 5,
-        },
-        {
-            id: 4,
-            name: "Mohan Thapa",
-            role: "Teacher",
-            image: "/placeholder.svg?height=40&width=40",
-            content:
-                "Teaching at Milaan EduCare has been a rewarding experience. The platform’s resources enable me to deliver lessons effectively and engage students with real-world examples.",
-            rating: 4,
-        },
-        {
-            id: 5,
-            name: "Anita Gurung",
-            role: "Design Student",
-            image: "/placeholder.svg?height=40&width=40",
-            content:
-                "The UX and design courses at Milaan EduCare are comprehensive and inspiring. The projects helped me develop a strong portfolio which I’m confident will open doors in my design career.",
-            rating: 3,
-        },
-        {
-            id: 6,
-            name: "Deepak Magar",
-            role: "Science Student",
-            image: "/placeholder.svg?height=40&width=40",
-            content:
-                "Milaan EduCare’s science program provided clear explanations and engaging labs that deepened my understanding. The instructors are knowledgeable and approachable.",
-            rating: 5,
-        },
-    ]
+ 
+    const [testimonials, setTestimonials] = useState<ITestimonial[]>([])
+    const handleFetchTestimonials = async () => {
+        try {
+            const response = await axios.get('/api/admin/testimonials')
+            const data = response.data;
+            setTestimonials(data);
+        } catch (error) {
+            alert(error)
+        }
+    }
+    useEffect(() => {
+        handleFetchTestimonials()
+
+    }, [])
 
 
     return (
@@ -99,15 +61,17 @@ export default function Testimonials() {
 
                                     {/* Author Info */}
                                     <div className="flex items-center gap-3 mt-auto">
-                                        <Avatar className="h-10 w-10">
-                                            <AvatarImage src={testimonial.image || "/placeholder.svg"} alt={testimonial.name} />
-                                            <AvatarFallback>
-                                                {testimonial.name
-                                                    .split(" ")
-                                                    .map((n) => n[0])
-                                                    .join("")}
-                                            </AvatarFallback>
-                                        </Avatar>
+                                        <Image
+                                            height="100"
+                                            width="60"
+                                            src={testimonial.image}
+                                            alt={testimonial.name}
+                                            className="h-12 w-12 object-cover rounded-full border"
+                                            onError={(e) => {
+                                                const target = e.target as HTMLImageElement;
+                                                target.src = "/placeholder.svg?height=40&width=40";
+                                            }}
+                                        />
                                         <div>
                                             <div className="font-semibold text-sm">{testimonial.name}</div>
                                             <div className="text-xs text-muted-foreground">{testimonial.role}</div>

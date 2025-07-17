@@ -163,7 +163,7 @@ export default function AddTestimonials({ setTestimonials, setIsOpen }: IAddTest
                     <FormItem>
                         <FormLabel>Full name</FormLabel>
                         <FormControl>
-                            <Input placeholder="Enter your fullname" {...field} />
+                            <Input placeholder="Enter fullname" {...field} />
                         </FormControl>
                         <FormMessage />
                     </FormItem>
