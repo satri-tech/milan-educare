@@ -14,7 +14,7 @@ interface ITestimonialsProps {
 }
 
 export default function TestimonalsTable({ testimonials, setTestimonials }: ITestimonialsProps) {
-   
+
     const truncateContent = (content: string, maxLength: number = 100) => {
         return content.length > maxLength ? content.substring(0, maxLength) + "..." : content
     }
@@ -67,14 +67,17 @@ export default function TestimonalsTable({ testimonials, setTestimonials }: ITes
                                     height={100}
                                     width={60}
                                     src={testimonial.image.startsWith('/')
-                                        ? testimonial.image
-                                        : `/${testimonial.image}`}
+                                        ? `${testimonial.image}?v=${Date.now()}`  // Add cache busting
+                                        : `/${testimonial.image}?v=${Date.now()}`
+                                    }
                                     alt={testimonial.name}
                                     className="h-12 w-12 object-cover rounded-full border"
+                                    unoptimized={true}  // Bypass Next.js optimization temporarily for debugging
                                     onError={(e) => {
                                         const target = e.target as HTMLImageElement;
                                         target.onerror = null;
                                         target.src = "/placeholder.svg";
+                                        console.error("Failed to load image:", testimonial.image);  // Debug logging
                                     }}
                                 />
                             </TableCell>
