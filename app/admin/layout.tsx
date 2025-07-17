@@ -40,7 +40,7 @@ export default function AdminLayout({
 
     const headerData = {
         team: {
-            name: "Client Name",
+            name: "Milaan Educare",
             logo: Building,
             plan: "Admin Panel",
         },
