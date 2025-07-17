@@ -68,21 +68,11 @@ export default function TestimonalsTable({ testimonials, setTestimonials }: ITes
                                     height={100}
                                     width={60}
                                     src={
-                                        testimonial.image.startsWith('http')  // Check if absolute URL
-                                            ? testimonial.image                 // Use as-is if external
-                                            : testimonial.image.startsWith('/uploads')  // Check if already has /uploads
-                                                ? testimonial.image               // Use as-is if properly prefixed
-                                                : `/uploads/${testimonial.image}` // Otherwise, add /uploads prefix
+                                        testimonial.image
                                     }
                                     alt={testimonial.name}
                                     className="h-12 w-12 object-cover rounded-full border"
-                                    unoptimized={true}  // Bypass Next.js optimization temporarily for debugging
-                                    onError={(e) => {
-                                        const target = e.target as HTMLImageElement;
-                                        target.onerror = null;
-                                        target.src = "/placeholder.svg";
-                                        console.error("Failed to load image:", testimonial.image);  // Debug logging
-                                    }}
+
                                 />
                             </TableCell>
                             <TableCell className="font-medium">
