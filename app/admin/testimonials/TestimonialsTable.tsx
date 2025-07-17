@@ -66,9 +66,12 @@ export default function TestimonalsTable({ testimonials, setTestimonials }: ITes
                                 <Image
                                     height={100}
                                     width={60}
-                                    src={testimonial.image.startsWith('/')
-                                        ? `${testimonial.image}?v=${Date.now()}`  // Add cache busting
-                                        : `/${testimonial.image}?v=${Date.now()}`
+                                    src={
+                                        testimonial.image.startsWith('http')  // Check if absolute URL
+                                            ? testimonial.image                 // Use as-is if external
+                                            : testimonial.image.startsWith('/uploads')  // Check if already has /uploads
+                                                ? testimonial.image               // Use as-is if properly prefixed
+                                                : `/uploads/${testimonial.image}` // Otherwise, add /uploads prefix
                                     }
                                     alt={testimonial.name}
                                     className="h-12 w-12 object-cover rounded-full border"

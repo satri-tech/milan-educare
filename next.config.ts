@@ -1,7 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  output: "standalone", // or 'export' depending on your setup
+  images: {
+    domains: ["milaaneducare.edu.np"],
+  },
 };
 
 export default nextConfig;

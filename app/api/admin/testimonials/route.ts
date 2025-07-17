@@ -21,7 +21,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const { name, role, image, content, rating } = await request.json();
-    console.log(image)
+    console.log(image);
 
     // Validate required fields
     if (!name || !role || !content || !rating) {
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
       data: {
         name,
         role,
-        image: image || "/placeholder.svg?height=40&width=40",
+        image: image,
         content,
         rating: parseInt(rating),
       },
