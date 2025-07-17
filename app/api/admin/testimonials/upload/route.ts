@@ -36,12 +36,7 @@ export async function POST(request: NextRequest) {
     const fileName = `testimonial-${uuidv4()}${fileExtension}`;
 
     // Create upload path
-    const uploadDir = path.join(
-      process.cwd(),
-      "public",
-      "uploads",
-      "testimonials"
-    );
+    const uploadDir = path.join(process.cwd(), "public");
     const filePath = path.join(uploadDir, fileName);
 
     // Create directory if it doesn't exist
