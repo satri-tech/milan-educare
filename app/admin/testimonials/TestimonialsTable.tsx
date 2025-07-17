@@ -18,6 +18,7 @@ export default function TestimonalsTable({ testimonials, setTestimonials }: ITes
     const truncateContent = (content: string, maxLength: number = 100) => {
         return content.length > maxLength ? content.substring(0, maxLength) + "..." : content
     }
+
     const renderStars = (rating: number) => {
         return Array.from({ length: 5 }, (_, i) => (
             <Star
@@ -40,6 +41,17 @@ export default function TestimonalsTable({ testimonials, setTestimonials }: ITes
             toast.error("Failed to delete testimonial. Please try again.")
         }
     }
+
+    // Helper function to get image source
+    const getImageSource = (imagePath: string) => {
+        // If it's already a full URL or starts with /api, return as is
+        if (imagePath.startsWith('http') || imagePath.startsWith('/api')) {
+            return imagePath;
+        }
+        // Otherwise, use the image API route
+        return `/api/images/${imagePath}`;
+    }
+
     return <div className="rounded-md border">
         <Table>
             <TableHeader>
@@ -63,16 +75,16 @@ export default function TestimonalsTable({ testimonials, setTestimonials }: ITes
                     testimonials.map((testimonial) => (
                         <TableRow key={testimonial.id}>
                             <TableCell>
-                                {testimonial.image}
                                 <Image
-                                    height={100}
-                                    width={60}
-                                    src={
-                                        testimonial.image
-                                    }
+                                    height={48}
+                                    width={48}
+                                    src={`/api/admin/testimonials/image${testimonial.image}`}
                                     alt={testimonial.name}
                                     className="h-12 w-12 object-cover rounded-full border"
-
+                                    onError={(e) => {
+                                        // Fallback to a default image if the API fails
+                                        e.currentTarget.src = '/images/default-avatar.png';
+                                    }}
                                 />
                             </TableCell>
                             <TableCell className="font-medium">
@@ -98,12 +110,6 @@ export default function TestimonalsTable({ testimonials, setTestimonials }: ITes
 
                             <TableCell className="text-right">
                                 <div className="flex items-center justify-end gap-2">
-                                    {/* <Button
-                                        variant="outline"
-                                        size="sm"
-                                    >
-                                        <Edit className="h-4 w-4" />
-                                    </Button> */}
                                     <AlertDialog>
                                         <AlertDialogTrigger asChild>
                                             <Button size="icon" className="bg-red-700 hover:bg-red-800">
