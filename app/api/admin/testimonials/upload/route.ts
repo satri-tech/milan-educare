@@ -31,9 +31,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Generate unique filename
+    // Generate a shorter, hyphen-free filename (e.g., "testimonial_abc123xyz.jpg")
     const fileExtension = path.extname(file.name);
-    const fileName = `testimonial-${uuidv4()}${fileExtension}`;
+    const uniqueId = uuidv4().replace(/-/g, ""); // Remove all hyphens
+    const shortId = uniqueId.slice(0, 8); // Take first 8 chars for brevity
+    const fileName = `testimonial_${shortId}${fileExtension}`; // Using underscore instead of hyphen
 
     // Create upload path
     const uploadDir = path.join(process.cwd(), "public");
