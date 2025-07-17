@@ -63,6 +63,7 @@ export default function TestimonalsTable({ testimonials, setTestimonials }: ITes
                     testimonials.map((testimonial) => (
                         <TableRow key={testimonial.id}>
                             <TableCell>
+                                {testimonial.image}
                                 <Image
                                     height={100}
                                     width={60}
