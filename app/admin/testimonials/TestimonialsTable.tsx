@@ -42,16 +42,6 @@ export default function TestimonalsTable({ testimonials, setTestimonials }: ITes
         }
     }
 
-    // Helper function to get image source
-    const getImageSource = (imagePath: string) => {
-        // If it's already a full URL or starts with /api, return as is
-        if (imagePath.startsWith('http') || imagePath.startsWith('/api')) {
-            return imagePath;
-        }
-        // Otherwise, use the image API route
-        return `/api/images/${imagePath}`;
-    }
-
     return <div className="rounded-md border">
         <Table>
             <TableHeader>
