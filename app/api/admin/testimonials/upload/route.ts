@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
     await writeFile(filePath, buffer);
 
     // Return the public URL
-    const publicUrl = `/uploads/testimonials/${fileName}`;
+    const publicUrl = `/${fileName}`;
 
     return NextResponse.json({
       message: "File uploaded successfully",
