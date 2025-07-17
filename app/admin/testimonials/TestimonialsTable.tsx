@@ -14,9 +14,7 @@ interface ITestimonialsProps {
 }
 
 export default function TestimonalsTable({ testimonials, setTestimonials }: ITestimonialsProps) {
-    console.log(testimonials)
-
-
+   
     const truncateContent = (content: string, maxLength: number = 100) => {
         return content.length > maxLength ? content.substring(0, maxLength) + "..." : content
     }
@@ -66,14 +64,17 @@ export default function TestimonalsTable({ testimonials, setTestimonials }: ITes
                         <TableRow key={testimonial.id}>
                             <TableCell>
                                 <Image
-                                    height="100"
-                                    width="60"
-                                    src={testimonial.image}
+                                    height={100}
+                                    width={60}
+                                    src={testimonial.image.startsWith('/')
+                                        ? testimonial.image
+                                        : `/${testimonial.image}`}
                                     alt={testimonial.name}
                                     className="h-12 w-12 object-cover rounded-full border"
                                     onError={(e) => {
                                         const target = e.target as HTMLImageElement;
-                                        target.src = "/placeholder.svg?height=40&width=40";
+                                        target.onerror = null;
+                                        target.src = "/placeholder.svg";
                                     }}
                                 />
                             </TableCell>
