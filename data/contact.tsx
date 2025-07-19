@@ -85,7 +85,7 @@ export const contactInfo = {
         },
         {
           name: "Instagram",
-          href: "https://www.instagram.com/milaneducare/",
+          href: "https://www.instagram.com/milaan.educare/",
           icon: <FaInstagram className="h-5 w-5" />,
           color: "bg-pink-500",
         },
@@ -97,7 +97,7 @@ export const contactInfo = {
         },
         {
           name: "YouTube",
-          href: "https://www.youtube.com/@milaneducare",
+          href: "https://www.youtube.com/@pokharareels",
           icon: <FaYoutube className="h-5 w-5" />,
           color: "bg-red-600",
         },

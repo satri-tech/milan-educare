@@ -96,7 +96,7 @@ export default function NebNotes() {
 
     if (!nebData || Object.keys(nebData).length === 0) {
         return (
-            <div id="notes" className="flex lg:flex-row flex-col justify-center items-center mt-16 h-max border-t border-slate-200 font-sans pt-12 w-screen bg-gradient-to-br from-slate-50 to-blue-50/30">
+            <div id="notes" className="flex lg:flex-row flex-col justify-center items-center mt-16 h-max border-t border-slate-200 font-sans pt-12 w-full bg-gradient-to-br from-slate-50 to-blue-50/30">
                 <div className="flex lg:w-[85%] w-[85%] gap-8 flex-col">
                     <SectionHeader />
 
@@ -134,7 +134,7 @@ export default function NebNotes() {
     }
 
     return (
-        <div id="notes" className="flex lg:flex-row flex-col justify-center items-center mt-16 h-max border-t border-slate-200 font-sans pt-12 w-screen bg-gradient-to-br from-slate-50 to-blue-50/30">
+        <div id="notes" className="flex lg:flex-row flex-col justify-center items-center mt-16 h-max border-t border-slate-200 font-sans pt-12 w-full bg-gradient-to-br from-slate-50 to-blue-50/30">
             <div className="flex lg:w-[85%] w-[85%] gap-8 flex-col">
                 {/* Enhanced Header */}
                 <SectionHeader />

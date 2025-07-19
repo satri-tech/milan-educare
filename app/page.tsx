@@ -9,12 +9,12 @@ import SliderImage2 from '@/public/sliderImage2.png'
 import SliderImage3 from '@/public/sliderImage3.png'
 import MockTest from "@/components/features/MockTest";
 import NebNotes from "@/components/features/neb-notes/NebNotes1";
-import AboutUs from "@/components/features/AboutUs";
 import ContactSection from "@/components/features/ContactUs";
 import Footer from "@/components/layouts/Footer";
 import NoticeDialog from '@/components/features/notice/NoticeDialog';
 import axios from 'axios';
 import Testimonials from '@/components/features/testimonials/Testimonials';
+import AboutUs from '@/components/features/AboutUs';
 
 // TypeScript interface for notice data
 interface NoticeData {
@@ -61,7 +61,7 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col overflow-y-hidden">
+    <div className="flex flex-col ">
       <NavBar />
 
       {/* Notice Dialog - only render if we have notice data */}
