@@ -156,7 +156,7 @@ export default function PdfUploader() {
           </div>
           <div >
             {/* Upload Section */}
-            <div className="  rounded-xl p-12 mb-8 text-center  border border-dashed bg-neutral-900">
+            <div className="  rounded-xl p-12 mb-8 text-center  border border-dashed bg-secondary">
               <div className="max-w-md mx-auto">
                 <Upload className="mx-auto h-10 w-10  mb-4" />
                 <h3 className="text-lg font-semibold  mb-2">Upload PDF Files</h3>
@@ -203,10 +203,10 @@ export default function PdfUploader() {
                       <div className="flex items-start justify-between">
                         <div className="flex items-start space-x-4 flex-1">
                           <div className="border p-3 rounded-lg">
-                            <FileText className="h-6 w-6 text-white" />
+                            <FileText className="h-6 w-6 text-primary" />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <h3 className="font-semibold text-white text-base truncate pr-4">
+                            <h3 className="font-semibold text-secondary-foreground text-base truncate pr-4">
                               {file.originalName}
                             </h3>
                             <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">

@@ -49,7 +49,7 @@ export default function TestimonialsPage() {
                                     Add Testimonial
                                 </Button>
                             </DialogTrigger>
-                            <DialogContent className="max-w-2xl">
+                            <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
                                 <DialogHeader>
                                     <DialogTitle>Add New Testimonial</DialogTitle>
                                     <DialogDescription>
