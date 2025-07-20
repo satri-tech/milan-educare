@@ -62,7 +62,7 @@ export const contactInfo = {
         {
           icon: <LocationEdit className="h-5 w-5" />,
           label: "Location",
-          value: "Pokhara 7, Shantinagar Chowk",
+          value: "Mahendrapul, Mobile Tower",
         },
         {
           icon: <Mail className="h-5 w-5" />,

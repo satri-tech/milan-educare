@@ -26,8 +26,8 @@ import { ITestimonial } from "./types"
 
 const formSchema = z.object({
     fullname: z.string().min(5).max(50),
-    role: z.string().min(4).max(15),
-    content: z.string().min(4).max(300),
+    role: z.string().min(4).max(100),
+    content: z.string().min(4).max(1000),
     ratings: z
         .string({
             required_error: "Please select an email to display.",
