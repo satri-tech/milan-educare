@@ -76,7 +76,7 @@ const NoticeImage: React.FC<NoticeImageProps> = ({ src, alt, onClose }) => {
 
             {/* Notice Image */}
             <Image
-                src={`${src}?v=${Date.now()}`}
+                src={`/api/admin/notice/upload/${src}`}
                 alt={alt}
                 className={`w-full h-auto object-contain transition-opacity duration-300 ${imageLoading ? 'opacity-0 absolute' : 'opacity-100'
                     }`}

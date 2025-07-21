@@ -130,10 +130,8 @@ export default function NoticePage() {
         const i = Math.floor(Math.log(bytes) / Math.log(k));
         return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
     };
-
     const cacheBustedUrl = (url: string | null) =>
-        url ? `${url}${url.includes("?") ? "&" : "?"}t=${Date.now()}` : null;
-
+        url ? `${url.startsWith('/') ? url : `/${url}`}?t=${Date.now()}` : null;
     if (loading) {
         return (
             <div className="container mx-auto py-8 px-4">
@@ -218,13 +216,20 @@ export default function NoticePage() {
                         <CardContent>
                             <div className="border rounded-lg p-4">
                                 <div className="relative w-full h-[300px] mx-auto">
+                                    
                                     <Image
-                                        src={cacheBustedUrl(currentImageUrl) || ""}
-                                        alt="Current Notice"
+                                        src={`/api/admin/notice/upload/${currentImageUrl}`}
+                                        alt={currentImageUrl}
+                                        onError={(e) => {
+                                            // Fallback to a default image if the API fails
+                                            e.currentTarget.src = '/images/default-avatar.png';
+                                        }}
                                         fill
                                         className="object-contain rounded-lg shadow-sm"
                                         sizes="(max-width: 768px) 100vw, 700px"
                                     />
+
+
                                 </div>
                             </div>
                         </CardContent>
