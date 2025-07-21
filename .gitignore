@@ -17,6 +17,9 @@
 /.next/
 /out/
 
+# Ignore public folder
+/public
+
 # production
 /build
 
