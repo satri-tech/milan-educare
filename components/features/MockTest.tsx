@@ -93,7 +93,7 @@ export default function MockTest() {
                     title="Mock Tests"
                     MainIcon={FileText}
                     AccentIcon={Timer}
-                    lineClassName="w-68"
+                    lineClassName=" w-48 sm:w-68"
                 />
                 {/* <SectionHeader
                     title="Mock Tests"

@@ -18,7 +18,7 @@ export default function SectionHeader({
     position = "start",
     lineColor = "from-yellow-400 to-orange-400",
     className = "",
-    lineClassName = "w-96"
+    lineClassName = " w-72 sm:w-96"
 }: SectionHeaderProps) {
     const positionClasses = {
         start: "items-start",
