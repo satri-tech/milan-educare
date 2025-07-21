@@ -16,6 +16,16 @@ model User {
   createdAt  DateTime @default(now())
 }
 
+model SliderImage {
+  id        String   @id @default(uuid())
+  name      String // e.g., "slide1.jpg"
+  url       String // e.g., "/images/slider/slide1.jpg"
+  altText   String? // optional alt text for accessibility/SEO
+  order     Int // for controlling the order of display
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model MockTest {
   id          String @id @default(uuid())
   title       String

@@ -21,14 +21,14 @@ export const contactInfo = {
         id: "full-name",
         label: "Full Name",
         type: "text",
-        placeholder: "Your full name",
+        placeholder: "Full name",
         colSpan: 1,
       },
       {
         id: "phone",
         label: "Phone Number",
         type: "text",
-        placeholder: "9800000000",
+        placeholder: "98XXXXXXXX",
         colSpan: 1,
       },
       {
@@ -52,7 +52,7 @@ export const contactInfo = {
   contactCards: [
     {
       icon: CreditCard,
-      title: "CONTACT INFORMATION",
+      title: "CONTACT",
       items: [
         {
           icon: <Phone className="h-5 w-5" />,
@@ -62,7 +62,7 @@ export const contactInfo = {
         {
           icon: <LocationEdit className="h-5 w-5" />,
           label: "Location",
-          value: "Mahendrapul, Mobile Tower",
+          value: "Mahendrapul, Pokhara-9 (Near Mobile Tower)",
         },
         {
           icon: <Mail className="h-5 w-5" />,

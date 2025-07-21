@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Monitor, Moon, Sun, Smartphone, Check } from "lucide-react";
+import { Monitor, Moon, Sun, Check } from "lucide-react";
 import { useTheme } from "next-themes";
 
 const themes = [
@@ -163,7 +163,7 @@ export default function SettingsComponent() {
             </CardContent>
           </Card>
 
-        
+
         </div>
       </div>
     </div>
