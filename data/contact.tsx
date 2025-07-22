@@ -62,7 +62,7 @@ export const contactInfo = {
         {
           icon: <LocationEdit className="h-5 w-5" />,
           label: "Location",
-          value: "Mahendrapul, Pokhara-9 (Near Mobile Tower)",
+          value: "Mahendrapul, Pokhara-9 (2nd Floor, Mobile Tower)",
         },
         {
           icon: <Mail className="h-5 w-5" />,
