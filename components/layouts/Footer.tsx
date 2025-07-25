@@ -1,5 +1,6 @@
+import Image from "next/image";
 import React from "react";
-
+import LogoImage from '@/public/logo.png'
 export default function Footer() {
     // const links = [
     //     { title: "Home", id: "home" },
@@ -36,13 +37,24 @@ export default function Footer() {
         <div className="w-full flex flex-col items-center bg-primary text-white sm:pb-5 tracking-wide ">
 
             <div className="w-11/12 flex flex-col  gap-1 font-Poppins sm:mt-14 mt-10 z-49  ">
-                <div className=" h-28 w-full">
-                    <div className="text-3xl font-semibold font-Poppins ">
-                        Milaan EduCare
+                <div className=" h-28 w-full flex">
+                    <Image
+                        src={LogoImage}
+                        alt="logo"
+                        height={1000}
+                        width={100}
+                        className="h-[70px] w-[70px] transition-transform duration-200 hover:rotate-3"
+                    />
+                    <div className="w-full">
+                        <div className="text-3xl font-semibold font-Poppins ">
+
+                            Milaan EduCare
+                        </div>
+                        <div className="text-secondary-text">
+                            Empowering Students, Enriching Futures
+                        </div>
                     </div>
-                    <div className="text-secondary-text">
-                        Empowering Students, Enriching Futures
-                    </div>
+
                 </div>
                 {/* 
                 <div className="md:flex md:flex-row flex-col  grid grid-cols-2 gap-y-10  w-full  ">

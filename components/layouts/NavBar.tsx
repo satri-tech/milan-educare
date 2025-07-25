@@ -1,6 +1,6 @@
 'use client'
 import { HiOutlineMenuAlt4, HiX } from "react-icons/hi";
-import LogoImage from '@/public/logo.jpg'
+import LogoImage from '@/public/logo.png'
 import Image from "next/image";
 import { useState, useEffect, useMemo } from "react";
 
@@ -111,9 +111,9 @@ export default function NavBar() {
     };
 
     return (
-        <div className={`py-4 flex w-full justify-center font-Poppins sticky top-0 z-50 transition-all duration-300 ease-in-out ${isScrolled
-                ? 'bg-white/80 backdrop-blur-md shadow-sm border-b border-gray-100'
-                : 'bg-white'
+        <div className={`py-1 flex w-full justify-center font-Poppins sticky top-0 z-50 transition-all duration-300 ease-in-out ${isScrolled
+            ? 'bg-white/80 backdrop-blur-md shadow-sm border-b border-gray-100'
+            : 'bg-white'
             }`}>
             <div className="w-[92%] flex justify-between items-center">
                 {/* Logo with hover effect */}
@@ -122,9 +122,9 @@ export default function NavBar() {
                     <Image
                         src={LogoImage}
                         alt="logo"
-                        height={100}
+                        height={1000}
                         width={100}
-                        className="h-10 w-10 transition-transform duration-200 hover:rotate-3"
+                        className="h-16 w-16 transition-transform duration-200 hover:rotate-3"
                     />
                 </div>
 
@@ -133,8 +133,8 @@ export default function NavBar() {
                     {links.map((data, index) => (
                         <div
                             className={`cursor-pointer relative transition-all duration-300 ease-in-out transform hover:scale-105 hover:-translate-y-0.5 ${activeSection === data.id
-                                    ? 'text-green-600 font-semibold'
-                                    : 'hover:text-green-600 text-gray-700'
+                                ? 'text-green-600 font-semibold'
+                                : 'hover:text-green-600 text-gray-700'
                                 }`}
                             key={data.id}
                             onClick={() => handleMenuClick(data.id)}
@@ -166,8 +166,8 @@ export default function NavBar() {
                     {/* Mobile Dropdown Menu with slide-in animation */}
                     <div
                         className={`absolute top-full right-0 mt-2 bg-white/95 backdrop-blur-md shadow-xl border border-gray-200 rounded-xl min-w-[200px] py-2 z-50 transition-all duration-300 ease-in-out transform origin-top-right ${isMobileMenuOpen
-                                ? 'opacity-100 scale-100 translate-y-0'
-                                : 'opacity-0 scale-95 -translate-y-2 pointer-events-none'
+                            ? 'opacity-100 scale-100 translate-y-0'
+                            : 'opacity-0 scale-95 -translate-y-2 pointer-events-none'
                             }`}
                         onClick={(e) => e.stopPropagation()}
                     >
@@ -175,8 +175,8 @@ export default function NavBar() {
                             <div
                                 key={data.id}
                                 className={`px-4 py-3 cursor-pointer transition-all duration-200 ease-in-out border-b border-gray-100 last:border-b-0 transform hover:scale-105 hover:translate-x-1 ${activeSection === data.id
-                                        ? 'text-green-600 font-semibold bg-green-50 border-l-4 border-l-green-600'
-                                        : 'hover:text-green-600 hover:bg-gray-50'
+                                    ? 'text-green-600 font-semibold bg-green-50 border-l-4 border-l-green-600'
+                                    : 'hover:text-green-600 hover:bg-gray-50'
                                     }`}
                                 onClick={() => handleMenuClick(data.id)}
                                 style={{
